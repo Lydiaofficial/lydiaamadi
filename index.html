@@ -365,6 +365,15 @@ body.menu-open .logo{opacity:1}
 .rh-foot .l{text-transform:uppercase;font-size:clamp(1rem,1.5vw,1.35rem);line-height:1.15}
 .rh-foot .l i{font-style:normal;display:inline-block;margin-left:.5em}
 .rh-foot .r{text-align:right;font-size:13px;line-height:1.5;max-width:42ch}
+.wfilt{display:flex;gap:clamp(16px,3vw,40px);flex-wrap:wrap;justify-content:flex-end}
+.wfilt button{all:unset;cursor:pointer;position:relative;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase}
+.wfilt button small{display:inline!important;font-family:var(--mono);font-size:10px;letter-spacing:0;color:var(--mut);margin-left:5px;vertical-align:super}
+.wfilt button::after{content:"";position:absolute;left:0;right:100%;bottom:-4px;height:1.5px;background:currentColor;transition:right .3s cubic-bezier(.7,0,.2,1)}
+.wfilt button:hover::after,.wfilt button[aria-current="true"]::after{right:0}
+.wfilt button:focus-visible{outline:1.5px solid var(--fg);outline-offset:4px}
+#work .works{padding-top:6vh}
+#work .rh-foot .r{max-width:none}
+@media (max-width:760px){.wfilt{justify-content:flex-start}}
 .rh-foot .r small{display:block;color:var(--mut);text-transform:uppercase;font-size:12px}
 .rh-foot .r p{margin:0;font-size:clamp(1rem,1.5vw,1.3rem);line-height:1.35;text-align:left}
 
@@ -826,15 +835,14 @@ body.menu-open .logo{opacity:1}
 <div class="peek" id="peek" aria-hidden="true"></div>
 
 <!-- ============ WORK (archive) ============ -->
-<section class="work away" id="work" aria-label="Work">
-  <div class="name"><div class="roll" id="roll" aria-live="polite"></div><p class="sub" id="sub"></p></div>
-  <div class="rail" id="rail"></div>
-  <div class="ptr" id="ptr" aria-hidden="true"></div>
-  <div class="dial" id="dial" role="slider" tabindex="0" aria-label="Projects dial" aria-valuemin="1" aria-valuemax="15" aria-valuenow="1"><svg id="dsvg" viewBox="-500 -500 1000 1000" aria-hidden="true"></svg></div>
-  <div class="whint">Drag or scroll</div>
-  <button class="wopen" id="wopen" data-mag>Open ↗</button>
-  <div class="pill" id="pill" aria-hidden="true"></div>
-</section>
+<main class="page away" id="work" aria-label="Work">
+  <section class="rh-hero" style="min-height:80vh">
+    <h1 class="rh"><span><b style="--i:0">All</b></span><span><b style="--i:1">Work</b></span></h1>
+    <div class="rh-foot"><span class="l">Work<i>↘</i></span><div class="r"><nav class="wfilt" id="wfilt" aria-label="Filter work"></nav></div></div>
+  </section>
+  <section class="works" id="worksAll"><div class="wcol l" id="wallL"></div><div class="wcol r" id="wallR"></div></section>
+  <footer class="pagefoot"><span><button class="homelink" data-go="home">LYDIA</button></span><span>Open to roles</span></footer>
+</main>
 
 <canvas class="fluid" id="fluid" aria-hidden="true"></canvas>
 <div class="cursor" id="cursor" aria-hidden="true"><b id="cursorTxt">View</b></div>
@@ -1105,8 +1113,39 @@ body.menu-open .logo{opacity:1}
   $('#wcolR').style.paddingTop = '16vh';
   works.forEach(a => a.addEventListener('keydown', e => { if (e.key === 'Enter') go('project', { i: byId(a.dataset.open) }); }));
 
+  /* ---------- work page: every project, shown like Selected work ---------- */
+  const WORK_ORDER = ['vela', 'rondo', 'fleeep', 'wander', 'assetpro', 'openrefine', 'menturr', 'kirgawa', 'pfw', ...P.map(p => p.id).filter(id => !['vela', 'rondo', 'fleeep', 'wander', 'assetpro', 'openrefine', 'menturr', 'kirgawa', 'pfw'].includes(id))];
+  const ANGS = ['-24deg', '18deg', '-12deg', '30deg', '-34deg', '8deg', '-20deg', '24deg'];
+  const allWorks = WORK_ORDER.map((id, k) => {
+    const p = P[byId(id)], L = LAYOUT[id] || { dev: 'desk', w: '100%', d: 'Soon', tag: p.kind || 'Case study soon', ang: ANGS[k % 8], bg: null, screen: null };
+    const a = document.createElement('article');
+    a.className = 'wk'; a.dataset.open = id; a.dataset.cat = p.cat || ''; a.tabIndex = 0; a.setAttribute('role', 'link'); a.setAttribute('aria-label', [p.n, p.kind, p.y].filter(Boolean).join(', '));
+    a.style.cssText = `--w:${L.w};--ar:${L.dev === 'phone' ? '6/7' : '16/10'}`;
+    a.innerHTML = `<header class="wk-h"><h3>${p.n}</h3><p>${L.d}</p></header><div class="wk-m">${cover(p, L, k + 1)}<span class="wk-y">${p.y || 'Soon'}</span></div><footer class="wk-f"><span>${L.tag}</span><span class="wk-v">View <i>↗</i></span></footer>`;
+    a.dataset.dev = L.dev;
+    a.addEventListener('keydown', e => { if (e.key === 'Enter') go('project', { i: byId(id) }); });
+    return a;
+  });
+  const WCATS = [[null, 'All'], ['apps', 'Apps'], ['dashboards', 'Dashboards'], ['tools', 'Open source']];
+  let wcat = null;
+  function wfilter(cat) {
+    wcat = cat || null; const L = $('#wallL'), R = $('#wallR'); L.innerHTML = ''; R.innerHTML = '';
+    const list = allWorks.filter(a => !wcat || a.dataset.cat === wcat);
+    list.forEach((a, k) => { a.style.setProperty('--o', k + 1); a.classList.toggle('end', k % 2 === 1 && a.dataset.dev === 'phone'); (k % 2 ? R : L).appendChild(a); });
+    R.style.paddingTop = list.length > 1 ? '16vh' : '0';
+    $$('#wfilt button').forEach(b => b.setAttribute('aria-current', String((b.dataset.cat || null) === wcat)));
+    requestAnimationFrame(workScroll);
+  }
+  $('#wfilt').innerHTML = WCATS.map(([c, n]) => `<button data-cat="${c || ''}" data-mag>${n}<small>${allWorks.filter(a => !c || a.dataset.cat === c).length}</small></button>`).join('');
+  wfilter(null);
+  $('#wfilt').addEventListener('click', e => { const b = e.target.closest('button'); if (b) wfilter(b.dataset.cat || null); });
+  function workScroll() {
+    if (view !== 'work') return; const vh = innerHeight;
+    allWorks.forEach(a => { if (!a.isConnected) return; const r = a.getBoundingClientRect(); if (r.bottom < -200 || r.top > vh + 200) return; const c = Math.max(-1.2, Math.min(1.2, (r.top + r.height / 2 - vh / 2) / vh)); a.querySelector('.cv-bg').style.transform = `translateY(${(c * -7).toFixed(2)}%) scale(1.18)`; a.querySelector('.cv-dev').style.transform = `translateY(${(c * 6).toFixed(2)}%)`; });
+  }
+
   /* ---------- scroll choreography (home + about) ---------- */
-  const home = $('#home'), about = $('#about');
+  const home = $('#home'), about = $('#about'), work = $('#work');
   let bw = 0, bh = 0;
   function measure() { const keep = big.style.transform; big.style.transform = 'none'; const r = big.getBoundingClientRect(); bw = r.width; bh = r.height; big.style.transform = keep; }
   const vel = { home: { last: 0, v: 0 }, about: { last: 0, v: 0 } };
@@ -1136,14 +1175,15 @@ body.menu-open .logo{opacity:1}
     const k = Math.max(-5, Math.min(5, V.v * .12));
     $$('.skew', scroller).forEach(el => el.style.transform = still ? '' : `skewY(${(-k).toFixed(2)}deg)`);
   }
-  vel.contact = { last: 0, v: 0 }; vel.writing = { last: 0, v: 0 };
-  (function skewLoop() { if (view === 'home') skewFor(home, 'home'); if (view === 'about') skewFor(about, 'about'); if (view === 'contact') skewFor($('#contact'), 'contact'); if (view === 'writing') skewFor($('#writing'), 'writing'); requestAnimationFrame(skewLoop); })();
+  vel.contact = { last: 0, v: 0 }; vel.writing = { last: 0, v: 0 }; vel.work = { last: 0, v: 0 };
+  (function skewLoop() { if (view === 'home') skewFor(home, 'home'); if (view === 'about') skewFor(about, 'about'); if (view === 'contact') skewFor($('#contact'), 'contact'); if (view === 'writing') skewFor($('#writing'), 'writing'); if (view === 'work') skewFor(work, 'work'); requestAnimationFrame(skewLoop); })();
   home.addEventListener('scroll', () => { requestAnimationFrame(homeScroll); body.classList.remove('hovering'); }, { passive: true });
   addEventListener('resize', () => { measure(); homeScroll(); });
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add(e.target.matches('[data-lit]') ? 'lit' : 'seen'); } }), { threshold: .35 });
   $$('[data-lit], .step').forEach(el => io.observe(el));
   const wio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('seen'); }), { threshold: .2 });
-  works.forEach(a => wio.observe(a));
+  works.forEach(a => wio.observe(a)); allWorks.forEach(a => wio.observe(a));
+  work.addEventListener('scroll', () => requestAnimationFrame(workScroll), { passive: true });
 
 
   /* ---------- stack (Right Hemisphere clients style) ---------- */
@@ -1212,7 +1252,7 @@ body.menu-open .logo{opacity:1}
 
   /* ---------- home: category peek + liquid hover ---------- */
   const peek = $('#peek'), blob = $('#blobc');
-  const catGo = cat => go('work', { at: P.findIndex(p => p.cat === cat) });
+  const catGo = cat => go('work', { cat });
   const homeSay = $('#homeSay');
   homeSay.addEventListener('pointerover', e => {
     const w = e.target.closest('.p'); if (!w) return;
@@ -1415,18 +1455,17 @@ body.menu-open .logo{opacity:1}
   }
 
   /* ---------- router ---------- */
-  const work = $('#work');
   function revealRh(pg) { const h = pg.querySelector('.rh'); if (!h) return; h.classList.remove('in'); void h.offsetWidth; h.classList.add('in'); }
   function show(v, opts) {
     const prev = view; view = v;
     home.classList.toggle('away', v !== 'home'); about.classList.toggle('away', v !== 'about'); work.classList.toggle('away', v !== 'work'); caseEl.classList.toggle('away', v !== 'project'); contact.classList.toggle('away', v !== 'contact'); writing.classList.toggle('away', v !== 'writing');
-    $('#np').classList.toggle('hide', v === 'work');
+    $('#np').classList.toggle('hide', false);
     $('#sayLayer').hidden = true; $('#artCorner').innerHTML = ''; foot(v);
     big.classList.toggle('gone', v !== 'home'); body.classList.toggle('intro', false); body.classList.remove('hovering');
     $$('.links button').forEach(b => b.setAttribute('aria-current', b.dataset.go === v || (v === 'project' && b.dataset.go === 'work') ? 'page' : 'false'));
     if (v === 'home') { requestAnimationFrame(() => { measure(); homeScroll(); }); setHash(''); }
     else if (v === 'about') { about.scrollTop = 0; requestAnimationFrame(() => { galScroll(); revealRh(about); }); setHash('about'); }
-    else if (v === 'work') { if (opts.at != null) dialSelect(opts.at, true); rot = target + 140; placePtr(); redraw(cards[cur]); setHash('work'); }
+    else if (v === 'work') { if (prev !== 'project') work.scrollTop = 0; if ('cat' in opts) wfilter(opts.cat); requestAnimationFrame(() => { workScroll(); if (prev !== 'project') revealRh(work); }); setHash('work'); }
     else if (v === 'project') { const p = P[opts.i]; last = opts.i; if (prev !== 'project') backTo = prev === 'home' ? 'home' : 'work'; buildCase(p); setHash(p.id); }
     else { const pg = v === 'contact' ? contact : writing; pg.scrollTop = 0; requestAnimationFrame(() => revealRh(pg)); setHash(v); }
   }
@@ -1435,7 +1474,7 @@ body.menu-open .logo{opacity:1}
   async function go(v, opts = {}) {
     closeMenu();
     if (v === 'project' && view === 'project' && opts.i === last) { caseEl.scrollTo({ top: 0, behavior: still ? 'auto' : 'smooth' }); return; }
-    if (v === view && v !== 'project') { const pg = { home, about, contact, writing }[v]; if (pg) pg.scrollTo({ top: 0, behavior: still ? 'auto' : 'smooth' }); return; }
+    if (v === view && v !== 'project') { const pg = { home, about, contact, writing, work }[v]; if (pg) pg.scrollTo({ top: 0, behavior: still ? 'auto' : 'smooth' }); return; }
     if (busy) return; busy = true;
     body.classList.add('switching'); await sleep(300);
     show(v, opts); await sleep(40);
@@ -1452,65 +1491,10 @@ body.menu-open .logo{opacity:1}
   addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches && e.target.matches('.hm')) go('home'); });
   addEventListener('keydown', e => { if (e.key === 'Escape' && view === 'project') backTo === 'home' ? go('home') : go('work', { at: last }); });
 
-  /* ---------- work dial ---------- */
-  const svg = $('#dsvg'), dial = $('#dial'), rail = $('#rail'), roll = $('#roll'), ptr = $('#ptr');
-  const STEP = Math.min(22, 320 / (P.length - 1)); let rot = 0, target = 0, cur = 0, drag = null;
-  let s = '<circle r="470"/>';
-  for (let k = 0; k < 120; k++) { const a = k * 3 * Math.PI / 180, bigT = k % 5 === 0, r2 = bigT ? 440 : 452; s += `<line class="t${bigT ? ' big' : ''}" x1="${(Math.sin(a) * 470).toFixed(1)}" y1="${(-Math.cos(a) * 470).toFixed(1)}" x2="${(Math.sin(a) * r2).toFixed(1)}" y2="${(-Math.cos(a) * r2).toFixed(1)}"/>`; }
-  P.forEach((p, i) => { s += `<g transform="rotate(${i * STEP})"><line class="t big" x1="0" y1="-470" x2="0" y2="-420" style="stroke-width:3"/><text x="0" y="-398" text-anchor="middle">${String(i + 1).padStart(2, '0')} ${p.n.toUpperCase()}</text></g>`; });
-  svg.innerHTML = `<g id="dg">${s}</g>`;
-  const dg = $('#dg');
-  roll.innerHTML = P.map(p => `<span>${p.n}</span>`).join('');
-  const cards = P.map((p, i) => { const c = document.createElement('button'); c.className = 'wcard'; c.setAttribute('aria-label', [p.n, p.kind].filter(Boolean).join(', ')); c.innerHTML = art(p.id) + `<span class="tag">${String(i + 1).padStart(2, '0')}</span>`; c.addEventListener('click', () => { if (i === cur) go('project', { i }); else dialSelect(i); }); rail.appendChild(c); return c; });
-  const stagger = P.map((_, k) => [0, 34, -18, 26, -30, 12][k % 6]);
-  function dialSelect(i, force) {
-    i = Math.max(0, Math.min(P.length - 1, i)); target = -i * STEP;
-    if (i === cur && !force) return; cur = i;
-    $$('span', roll).forEach(sp => sp.style.transform = `translateY(${-i * 100}%)`); ripple('3', 40, 380);
-    const p = P[i]; $('#sub').innerHTML = `<b>${metaLine(p).toUpperCase() || 'SOON'}</b>${p.short}`;
-    cards.forEach((c, k) => c.classList.toggle('on', k === i)); redraw(cards[i]);
-    dial.setAttribute('aria-valuenow', i + 1); dial.setAttribute('aria-valuetext', p.n);
-  }
-  function placePtr() { requestAnimationFrame(() => { const dr = dial.getBoundingClientRect(); if (dr.height) ptr.style.top = (dr.top + dr.height * .03 - 16) + 'px'; }); }
-  addEventListener('resize', placePtr);
-  (function frame() {
-    if (view === 'work') {
-      rot += (target - rot) * (still ? 1 : .09); dg.setAttribute('transform', `rotate(${rot.toFixed(3)})`);
-      const fpos = -rot / STEP, cw = cards[0].offsetWidth || 200, gap = cw * 1.12;
-      cards.forEach((c, k) => { const off = k - fpos, x = off * gap - cw / 2, y = stagger[k] + Math.abs(off) * 14, sc = 1 - Math.min(.3, Math.abs(off) * .12); c.style.transform = `translate(${x}px,${y}px) scale(${sc}) rotate(${off * 2.5}deg)`; c.style.zIndex = 10 - Math.round(Math.abs(off)); c.style.opacity = Math.abs(off) > 3.2 ? 0 : 1; });
-    }
-    requestAnimationFrame(frame);
-  })();
-  dial.addEventListener('pointerdown', e => { dial.setPointerCapture(e.pointerId); const r = dial.getBoundingClientRect(); drag = { cx: r.left + r.width / 2, cy: r.top + r.height / 2, a0: Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2)), t0: target }; });
-  dial.addEventListener('pointermove', e => { if (!drag) return; const a = Math.atan2(e.clientY - drag.cy, e.clientX - drag.cx); let t = drag.t0 + (a - drag.a0) * 180 / Math.PI; t = Math.max(-(P.length - 1) * STEP - 8, Math.min(8, t)); const i = Math.round(-t / STEP); if (i !== cur && i >= 0 && i < P.length) dialSelect(i); target = t; });
-  const end = () => { if (!drag) return; drag = null; dialSelect(Math.round(-target / STEP), true); };
-  dial.addEventListener('pointerup', end); dial.addEventListener('pointercancel', end);
-  let lock = 0;
-  work.addEventListener('wheel', e => { e.preventDefault(); const now = performance.now(); if (now < lock) return; const d = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX; if (Math.abs(d) < 6) return; lock = now + 380; dialSelect(cur + (d > 0 ? 1 : -1)); }, { passive: false });
-  let sx = null; work.addEventListener('touchstart', e => { if (e.target.closest('.dial')) return; sx = e.touches[0].clientX; }, { passive: true });
-  work.addEventListener('touchend', e => { if (sx == null) return; const d = sx - e.changedTouches[0].clientX; if (Math.abs(d) > 40) dialSelect(cur + (d > 0 ? 1 : -1)); sx = null; });
-  addEventListener('keydown', e => {
-    if (view !== 'work') return;
-    if (['ArrowRight', 'ArrowDown'].includes(e.key)) { e.preventDefault(); dialSelect(cur + 1); }
-    if (['ArrowLeft', 'ArrowUp'].includes(e.key)) { e.preventDefault(); dialSelect(cur - 1); }
-    if (e.key === 'Enter' && document.activeElement === dial) go('project', { i: cur });
-  });
-  $('#wopen').addEventListener('click', () => go('project', { i: cur }));
-  const pill = $('#pill'); let mx = innerWidth * .78, my = innerHeight * .26, qx = mx, qy = my, vr = 0, lastMove = 0;
-  const pillAt = e => { mx = e.clientX + (e.pointerType === 'touch' ? -60 : 30); my = e.clientY - 80; lastMove = performance.now(); };
-  work.addEventListener('pointermove', pillAt); work.addEventListener('pointerdown', pillAt);
-  (function pf(t) {
-    const idle = performance.now() - lastMove > 2500, bob = idle && !still ? Math.sin(t / 700) * 10 : 0;
-    if (idle) { mx += (innerWidth * .78 - mx) * .01; my += (innerHeight * (small ? .3 : .26) - my) * .01; }
-    const dx = mx - qx; qx += dx * .08; qy += (my + bob - qy) * .08; vr += (dx * .25 - vr) * .1;
-    pill.style.transform = `translate(${qx}px,${qy}px) rotate(${Math.max(-50, Math.min(50, vr)) + 18 + (idle && !still ? Math.sin(t / 900) * 8 : 0)}deg)`;
-    requestAnimationFrame(pf);
-  })(0);
-  dialSelect(0, true);
 
   /* ---------- start ---------- */
   const h = location.hash.slice(1), pi = byId(h);
-  if (pi >= 0) { dialSelect(pi, true); show('project', { i: pi }); }
+  if (pi >= 0) show('project', { i: pi });
   else if (['work', 'about', 'contact', 'writing'].includes(h)) show(h, {});
   else {
     show('home', {}); measure(); homeScroll();
