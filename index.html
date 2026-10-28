@@ -957,6 +957,11 @@ body.menu-open .logo{opacity:1}
   })();
   addEventListener('pointermove', e => Fluid.move(e.clientX, e.clientY), { passive: true });
   addEventListener('pointerup', e => { if (e.pointerType === 'touch') Fluid.lift && Fluid.lift(); });
+  /* a tap or click on empty space ripples the water; controls keep their own feedback */
+  addEventListener('pointerdown', e => {
+    if (e.button > 0 || e.target.closest('a,button,input,textarea,select,label,[data-open],[data-go],.dial,.menu,.np,.cv,.c-m')) return;
+    Fluid.splash(e.clientX, e.clientY);
+  }, { passive: true });
 
   /* ---------- liquid SVG filter driver ---------- */
   const LQ = {};
