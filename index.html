@@ -3,9 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Lydia Amadi</title>
-<meta name="description" content="Product designer. I design apps, dashboards and open-source tools.">
+<title>Lydia Amadi, product designer</title>
+<meta name="description" content="I design apps, dashboards and open-source tools. Product designer who builds too.">
 <meta name="theme-color" content="#fafafa">
+<link rel="canonical" href="https://lydiaamadi.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Lydia Amadi">
+<meta property="og:title" content="Lydia Amadi, product designer">
+<meta property="og:description" content="I design apps, dashboards and open-source tools. Product designer who builds too.">
+<meta property="og:url" content="https://lydiaamadi.vercel.app/">
+<meta property="og:image" content="https://lydiaamadi.vercel.app/og/site.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lydia Amadi, product designer">
+<meta name="twitter:description" content="I design apps, dashboards and open-source tools. Product designer who builds too.">
+<meta name="twitter:image" content="https://lydiaamadi.vercel.app/og/site.jpg">
+<script>window.__PATHS = /^https?:$/.test(location.protocol) && !/claude/.test(location.host);</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -687,6 +701,25 @@ body.menu-open .logo{opacity:1}
 .desk,#case .c-dki{border-radius:1.4em!important;box-shadow:0 0 0 1px rgba(0,0,0,.1),0 2px 4px rgba(0,0,0,.08),0 24px 48px -12px rgba(0,0,0,.35),0 60px 90px -40px rgba(0,0,0,.45)!important}
 .desk::after,#case .c-dki::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);z-index:3}
 #case .c-dki{position:relative;grid-template-rows:auto 1fr!important}
+
+/* landing headers in the same light type as the page heroes */
+#homeSay{font-weight:400;letter-spacing:-.035em;line-height:.9;font-size:clamp(2.8rem,8.8vw,9.4rem);max-width:none;display:flex;flex-wrap:wrap;justify-content:space-between;gap:.04em 4vw}
+#homeSay .it{font-family:var(--sans);font-style:normal;font-weight:400;text-transform:uppercase;letter-spacing:-.035em;font-size:1em}
+.sec-title{font-weight:400}
+.sec-title i{font-family:var(--sans);font-style:normal;text-transform:uppercase;letter-spacing:-.035em}
+.cta h2{font-weight:400}
+.cta h2 i{font-family:var(--sans);font-style:normal;text-transform:uppercase;letter-spacing:-.04em}
+/* more tags around the name */
+.btag{position:absolute;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.02em;line-height:1;white-space:nowrap;padding:5px 9px;transition:background .5s,color .5s}
+.btag.dk{background:var(--fg);color:var(--bg)}
+.btag.ol{background:var(--bg);color:var(--fg);box-shadow:0 0 0 1px var(--fg)}
+.btag.t1{left:0;bottom:calc(100% + 18px)}
+.btag.t2{right:0;bottom:calc(100% + 18px)}
+.btag.t3{right:0;top:calc(100% + 18px)}
+.btag.t4{left:0;top:calc(100% + 18px)}
+.bigname.rise .btag{animation:labin2 .6s cubic-bezier(.2,.9,.2,1) both;animation-delay:calc(1.55s + var(--k) * 120ms)}
+@keyframes labin2{from{opacity:0;transform:translateY(8px)}}
+@media (max-width:760px){.btag.t3,.btag.t4{display:none}.btag{font-size:11px}}
 </style>
 </head>
 <body>
@@ -1031,9 +1064,10 @@ body.menu-open .logo{opacity:1}
     { id: 'aethon', n: 'Aethon Aero', y: '2026', kind: 'Website', cat: 'web', short: 'Aerospace site', one: 'A concept site for an aerospace company building sixth-generation aircraft.', meta: ['Built in Modulify', 'Interactive motion'], say: 'THE SKY, [re-engineered.]' },
     { id: 'pfw', n: 'Paris Fashion Week', y: '2026', kind: 'Website', cat: 'web', short: 'Fashion week site', one: 'A concept site for Paris Fashion Week, Womenswear Spring–Summer 2027.', meta: ['Built in Modulify', 'Scroll-driven motion'], say: 'TAKE YOUR [seat.]' },
     { id: 'pyrios', n: 'Pyrois', y: '2026', kind: 'Website', cat: 'web', short: 'Supercar house site', one: 'A concept site for a car house that builds two cars every ten years, in a lava field in Iceland.', meta: ['Built in Modulify', 'Interactive motion'], say: 'TWO. [Every ten years.]' },
-    ...[['fairly', 'Fairly'], ['orbithop', 'Orbit Hop'], ['lucid', 'Lucid']].map(([id, n]) => ({ id, n, y: '', kind: '', cat: null, short: 'Case study soon', one: 'Case study soon.', meta: [], say: `${n.toUpperCase()}. [Soon.]` }))
+    { id: 'orbithop', n: 'Orbit Hop', y: '2026', kind: 'Game', cat: 'apps', short: 'One-tap arcade game', one: 'A free one-tap arcade game. Hop between rings across eight painted worlds and fly real space missions.', meta: ['Browser game', 'Designed and built'], say: 'ONE TAP. [Two rings.]' },
+    ...[['fairly', 'Fairly'], ['lucid', 'Lucid']].map(([id, n]) => ({ id, n, y: '', kind: '', cat: null, short: 'Case study soon', one: 'Case study soon.', meta: [], say: `${n.toUpperCase()}. [Soon.]` }))
   ];
-  const FEATURED = ['vela', 'obol', 'rondo', 'aethon', 'pfw', 'pyrios', 'wander', 'fleeep', 'assetpro', 'menturr'];
+  const FEATURED = ['pfw', 'obol', 'vela', 'aethon', 'wander', 'pyrios', 'fleeep', 'rondo', 'menturr', 'assetpro'];
   const CATS = { apps: 'Apps', dashboards: 'Dashboards', tools: 'Open-source tools', web: 'Websites' };
   const ART = {
     vela: '<rect pathLength="1" x="30" y="24" width="140" height="92" rx="12"/><rect pathLength="1" x="46" y="48" width="24" height="18" rx="3"/><path pathLength="1" d="M46 92h52M46 102h30"/><path pathLength="1" d="M146 98s-12-7-12-14a6 6 0 0112-3 6 6 0 0112 3c0 7-12 14-12 14z"/>',
@@ -1095,7 +1129,7 @@ body.menu-open .logo{opacity:1}
 
   /* ---------- home: big name, marquee, stack ---------- */
   const big = $('#bigname'), logo = $('.logo');
-  big.innerHTML = `<span class="sbox"><span class="bchars">${[...'LYDIA'].map((c, i) => `<span class="ch" style="--i:${i}">${c}</span>`).join('')}</span>${['tl', 'tr', 'bl', 'br'].map((c, k) => `<b class="h ${c}" style="--k:${k}"></b>`).join('')}<span class="blab">Product designer</span></span>`;
+  big.innerHTML = `<span class="sbox"><span class="bchars">${[...'LYDIA'].map((c, i) => `<span class="ch" style="--i:${i}">${c}</span>`).join('')}</span>${['tl', 'tr', 'bl', 'br'].map((c, k) => `<b class="h ${c}" style="--k:${k}"></b>`).join('')}<span class="blab">Product designer</span><span class="btag dk t1" style="--k:0">Builder</span><span class="btag ol t2" style="--k:1">UX research</span><span class="btag ol t4" style="--k:2">Design systems</span><span class="btag dk t3" style="--k:3">Based in the UK</span></span>`;
   const blab = big.querySelector('.blab');
   big.querySelector('.bchars').style.filter = 'url(#liquid2)';
   $('#mq').innerHTML = Array(4).fill('<span>Product design</span><em>·</em><span>Design systems</span><em>·</em><span>User research</span><em>·</em><span>Prototyping</span><em>·</em>').join('');
@@ -1104,7 +1138,7 @@ body.menu-open .logo{opacity:1}
   /* cover photos, per project (Pexels) */
   const BGS = {"menturr": "images/bg/menturr.jpg", "pfw": "images/bg/pfw.jpg", "wander": "images/bg/wander.jpg", "openrefine": "images/bg/openrefine.jpg", "fleeep": "images/bg/fleeep.jpg", "vela": "images/bg/vela.jpg", "rondo": "images/bg/rondo.jpg", "assetpro": "images/bg/assetpro.jpg", "obol": "images/bg/obol.jpg", "aethon": "images/bg/aethon.jpg", "kirgawa": "images/bg/kirgawa.jpg"};
   /* real screens, per project (cropped from the designs) */
-  const SHOTS = {"pyrios": ["images/pyrios/00.jpg", "images/pyrios/01.jpg", "images/pyrios/02.jpg", "images/pyrios/03.jpg", "images/pyrios/04.jpg", "images/pyrios/05.jpg", "images/pyrios/06.jpg", "images/pyrios/07.jpg", "images/pyrios/08.jpg", "images/pyrios/09.jpg", "images/pyrios/10.jpg", "images/pyrios/11.jpg", "images/pyrios/12.jpg", "images/pyrios/13.jpg", "images/pyrios/14.jpg"], "pfw": ["images/pfw/00.jpg", "images/pfw/01.jpg", "images/pfw/02.jpg", "images/pfw/03.jpg", "images/pfw/04.jpg", "images/pfw/05.jpg", "images/pfw/06.jpg", "images/pfw/07.jpg", "images/pfw/08.jpg", "images/pfw/09.jpg", "images/pfw/10.jpg", "images/pfw/11.jpg", "images/pfw/12.jpg"], "aethon": ["images/aethon/00.jpg", "images/aethon/01.jpg", "images/aethon/02.jpg", "images/aethon/03.jpg", "images/aethon/04.jpg", "images/aethon/05.jpg", "images/aethon/06.jpg", "images/aethon/07.jpg", "images/aethon/08.jpg", "images/aethon/09.jpg", "images/aethon/10.jpg", "images/aethon/11.jpg", "images/aethon/12.jpg", "images/aethon/13.jpg", "images/aethon/14.jpg", "images/aethon/15.jpg"], "obol": ["images/obol/00.jpg", "images/obol/01.jpg", "images/obol/02.jpg", "images/obol/03.jpg", "images/obol/04.jpg", "images/obol/05.jpg", "images/obol/06.jpg", "images/obol/07.jpg", "images/obol/08.jpg", "images/obol/09.jpg", "images/obol/10.jpg", "images/obol/11.jpg", "images/obol/12.jpg", "images/obol/13.jpg", "images/obol/14.jpg", "images/obol/15.jpg"], "fleeep": ["images/fleeep/00.jpg", "images/fleeep/01.jpg", "images/fleeep/02.jpg", "images/fleeep/03.jpg", "images/fleeep/04.jpg", "images/fleeep/05.jpg", "images/fleeep/06.jpg", "images/fleeep/07.jpg", "images/fleeep/08.jpg", "images/fleeep/09.jpg", "images/fleeep/10.jpg", "images/fleeep/11.jpg", "images/fleeep/12.jpg", "images/fleeep/13.jpg"], "openrefine": ["images/openrefine/00.jpg", "images/openrefine/01.jpg", "images/openrefine/02.jpg", "images/openrefine/03.jpg", "images/openrefine/04.jpg", "images/openrefine/05.jpg", "images/openrefine/06.jpg", "images/openrefine/07.jpg", "images/openrefine/08.jpg"], "assetpro": ["images/assetpro/00.jpg", "images/assetpro/01.jpg", "images/assetpro/02.jpg", "images/assetpro/03.jpg", "images/assetpro/04.jpg", "images/assetpro/05.jpg", "images/assetpro/06.jpg", "images/assetpro/07.jpg", "images/assetpro/08.jpg", "images/assetpro/09.jpg", "images/assetpro/10.jpg"], "menturr": ["images/menturr/00.jpg", "images/menturr/01.jpg", "images/menturr/02.jpg", "images/menturr/03.jpg", "images/menturr/04.jpg", "images/menturr/05.jpg", "images/menturr/06.jpg", "images/menturr/07.jpg", "images/menturr/08.jpg"], "kirgawa": ["images/kirgawa/00.jpg", "images/kirgawa/01.jpg", "images/kirgawa/02.jpg", "images/kirgawa/03.jpg", "images/kirgawa/04.jpg", "images/kirgawa/05.jpg", "images/kirgawa/06.jpg", "images/kirgawa/07.jpg", "images/kirgawa/08.jpg", "images/kirgawa/09.jpg", "images/kirgawa/10.jpg"], "wander": ["images/wander/00.jpg", "images/wander/01.jpg", "images/wander/02.jpg", "images/wander/03.jpg", "images/wander/04.jpg", "images/wander/05.jpg", "images/wander/06.jpg", "images/wander/07.jpg", "images/wander/08.jpg", "images/wander/09.jpg", "images/wander/10.jpg", "images/wander/11.jpg", "images/wander/12.jpg", "images/wander/13.jpg", "images/wander/14.jpg", "images/wander/15.jpg"], "vela": ["images/vela/00.jpg", "images/vela/01.jpg", "images/vela/02.jpg", "images/vela/03.jpg", "images/vela/04.jpg", "images/vela/05.jpg", "images/vela/06.jpg", "images/vela/07.jpg", "images/vela/08.jpg", "images/vela/09.jpg", "images/vela/10.jpg", "images/vela/11.jpg", "images/vela/12.jpg", "images/vela/13.jpg", "images/vela/14.jpg", "images/vela/15.jpg"], "rondo": ["images/rondo/00.jpg", "images/rondo/01.jpg", "images/rondo/02.jpg", "images/rondo/03.jpg", "images/rondo/04.jpg", "images/rondo/05.jpg", "images/rondo/06.jpg", "images/rondo/07.jpg", "images/rondo/08.jpg", "images/rondo/09.jpg", "images/rondo/10.jpg", "images/rondo/11.jpg", "images/rondo/12.jpg", "images/rondo/13.jpg"]};
+  const SHOTS = {"orbithop": ["images/orbithop/00.jpg", "images/orbithop/01.jpg", "images/orbithop/02.jpg", "images/orbithop/03.jpg", "images/orbithop/04.jpg", "images/orbithop/05.jpg", "images/orbithop/06.jpg", "images/orbithop/07.jpg", "images/orbithop/08.jpg", "images/orbithop/09.jpg", "images/orbithop/10.jpg", "images/orbithop/11.jpg", "images/orbithop/12.jpg", "images/orbithop/13.jpg", "images/orbithop/14.jpg"], "pyrios": ["images/pyrios/00.jpg", "images/pyrios/01.jpg", "images/pyrios/02.jpg", "images/pyrios/03.jpg", "images/pyrios/04.jpg", "images/pyrios/05.jpg", "images/pyrios/06.jpg", "images/pyrios/07.jpg", "images/pyrios/08.jpg", "images/pyrios/09.jpg", "images/pyrios/10.jpg", "images/pyrios/11.jpg", "images/pyrios/12.jpg", "images/pyrios/13.jpg", "images/pyrios/14.jpg"], "pfw": ["images/pfw/00.jpg", "images/pfw/01.jpg", "images/pfw/02.jpg", "images/pfw/03.jpg", "images/pfw/04.jpg", "images/pfw/05.jpg", "images/pfw/06.jpg", "images/pfw/07.jpg", "images/pfw/08.jpg", "images/pfw/09.jpg", "images/pfw/10.jpg", "images/pfw/11.jpg", "images/pfw/12.jpg"], "aethon": ["images/aethon/00.jpg", "images/aethon/01.jpg", "images/aethon/02.jpg", "images/aethon/03.jpg", "images/aethon/04.jpg", "images/aethon/05.jpg", "images/aethon/06.jpg", "images/aethon/07.jpg", "images/aethon/08.jpg", "images/aethon/09.jpg", "images/aethon/10.jpg", "images/aethon/11.jpg", "images/aethon/12.jpg", "images/aethon/13.jpg", "images/aethon/14.jpg", "images/aethon/15.jpg"], "obol": ["images/obol/00.jpg", "images/obol/01.jpg", "images/obol/02.jpg", "images/obol/03.jpg", "images/obol/04.jpg", "images/obol/05.jpg", "images/obol/06.jpg", "images/obol/07.jpg", "images/obol/08.jpg", "images/obol/09.jpg", "images/obol/10.jpg", "images/obol/11.jpg", "images/obol/12.jpg", "images/obol/13.jpg", "images/obol/14.jpg", "images/obol/15.jpg"], "fleeep": ["images/fleeep/00.jpg", "images/fleeep/01.jpg", "images/fleeep/02.jpg", "images/fleeep/03.jpg", "images/fleeep/04.jpg", "images/fleeep/05.jpg", "images/fleeep/06.jpg", "images/fleeep/07.jpg", "images/fleeep/08.jpg", "images/fleeep/09.jpg", "images/fleeep/10.jpg", "images/fleeep/11.jpg", "images/fleeep/12.jpg", "images/fleeep/13.jpg"], "openrefine": ["images/openrefine/00.jpg", "images/openrefine/01.jpg", "images/openrefine/02.jpg", "images/openrefine/03.jpg", "images/openrefine/04.jpg", "images/openrefine/05.jpg", "images/openrefine/06.jpg", "images/openrefine/07.jpg", "images/openrefine/08.jpg"], "assetpro": ["images/assetpro/00.jpg", "images/assetpro/01.jpg", "images/assetpro/02.jpg", "images/assetpro/03.jpg", "images/assetpro/04.jpg", "images/assetpro/05.jpg", "images/assetpro/06.jpg", "images/assetpro/07.jpg", "images/assetpro/08.jpg", "images/assetpro/09.jpg", "images/assetpro/10.jpg"], "menturr": ["images/menturr/00.jpg", "images/menturr/01.jpg", "images/menturr/02.jpg", "images/menturr/03.jpg", "images/menturr/04.jpg", "images/menturr/05.jpg", "images/menturr/06.jpg", "images/menturr/07.jpg", "images/menturr/08.jpg"], "kirgawa": ["images/kirgawa/00.jpg", "images/kirgawa/01.jpg", "images/kirgawa/02.jpg", "images/kirgawa/03.jpg", "images/kirgawa/04.jpg", "images/kirgawa/05.jpg", "images/kirgawa/06.jpg", "images/kirgawa/07.jpg", "images/kirgawa/08.jpg", "images/kirgawa/09.jpg", "images/kirgawa/10.jpg"], "wander": ["images/wander/00.jpg", "images/wander/01.jpg", "images/wander/02.jpg", "images/wander/03.jpg", "images/wander/04.jpg", "images/wander/05.jpg", "images/wander/06.jpg", "images/wander/07.jpg", "images/wander/08.jpg", "images/wander/09.jpg", "images/wander/10.jpg", "images/wander/11.jpg", "images/wander/12.jpg", "images/wander/13.jpg", "images/wander/14.jpg", "images/wander/15.jpg"], "vela": ["images/vela/00.jpg", "images/vela/01.jpg", "images/vela/02.jpg", "images/vela/03.jpg", "images/vela/04.jpg", "images/vela/05.jpg", "images/vela/06.jpg", "images/vela/07.jpg", "images/vela/08.jpg", "images/vela/09.jpg", "images/vela/10.jpg", "images/vela/11.jpg", "images/vela/12.jpg", "images/vela/13.jpg", "images/vela/14.jpg", "images/vela/15.jpg"], "rondo": ["images/rondo/00.jpg", "images/rondo/01.jpg", "images/rondo/02.jpg", "images/rondo/03.jpg", "images/rondo/04.jpg", "images/rondo/05.jpg", "images/rondo/06.jpg", "images/rondo/07.jpg", "images/rondo/08.jpg", "images/rondo/09.jpg", "images/rondo/10.jpg", "images/rondo/11.jpg", "images/rondo/12.jpg", "images/rondo/13.jpg"]};
   /* height / width of each desktop screen, for fit and slow scroll */
   const SHOTR = {"openrefine": [0.914, 0.859, 0.487, 0.914, 0.399, 0.599, 0.276, 0.2, 0.16], "assetpro": [1.37, 0.828, 0.962, 0.824, 0.936, 0.92, 0.908, 1.372, 1.65, 0.962, 0.968], "menturr": [4.0, 1.545, 1.545, 0.782, 0.834, 0.875, 1.032, 2.193, 0.607], "kirgawa": [1.06, 1.23, 0.712, 0.712, 0.712, 0.841, 0.712, 0.712, 0.712, 1.052, 0.643], "pfw": [0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495], "aethon": [0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495], "pyrios": [0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495]};
   const LAYOUT = {
@@ -1118,6 +1152,7 @@ body.menu-open .logo{opacity:1}
     obol:       { col: 'L', dev: 'phone', w: '78%',  o: 9, d: 'Subscription wallet', tag: 'Concept / Product design / Build', ang: '-16deg', bg: null, screen: null, shot: 3, inset: true },
     menturr:    { col: 'L', dev: 'desk',  w: '100%', o: 7, d: 'Mentorship',     tag: 'Product design / Research',       ang: '-20deg', bg: null, screen: null },
     pfw:        { col: 'R', dev: 'desk',  w: '100%', o: 8, d: 'Fashion week site', tag: 'Web design / Motion / Build', ang: '24deg',  bg: null, screen: null },
+    orbithop:   { col: 'R', dev: 'phone', w: '78%',  o: 13, d: 'Arcade game', tag: 'Game design / Build', ang: '-28deg', bg: null, screen: null, shot: 1 },
     pyrios:     { col: 'L', dev: 'desk',  w: '100%', o: 12, d: 'Supercar house site', tag: 'Web design / Motion / Build', ang: '12deg', bg: null, screen: null },
     aethon:     { col: 'L', dev: 'desk',  w: '100%', o: 11, d: 'Aerospace site', tag: 'Web design / Motion / Build', ang: '-18deg', bg: null, screen: null }
   };
@@ -1151,7 +1186,7 @@ body.menu-open .logo{opacity:1}
   works.forEach(a => a.addEventListener('keydown', e => { if (e.key === 'Enter') go('project', { i: byId(a.dataset.open) }); }));
 
   /* ---------- work page: every project, shown like Selected work ---------- */
-  const WORK_LEAD = ['vela', 'obol', 'rondo', 'aethon', 'pfw', 'pyrios', 'wander', 'fleeep', 'assetpro', 'openrefine', 'menturr', 'kirgawa'];
+  const WORK_LEAD = ['pfw', 'obol', 'vela', 'aethon', 'wander', 'pyrios', 'fleeep', 'rondo', 'orbithop', 'menturr', 'assetpro', 'openrefine', 'kirgawa'];
   const WORK_ORDER = [...WORK_LEAD, ...P.map(p => p.id).filter(id => !WORK_LEAD.includes(id))];
   const ANGS = ['-24deg', '18deg', '-12deg', '30deg', '-34deg', '8deg', '-20deg', '24deg'];
   const allWorks = WORK_ORDER.map((id, k) => {
@@ -1200,7 +1235,7 @@ body.menu-open .logo{opacity:1}
     const p = Math.min(1, st / (vh * .85)), e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
     const lr = logo.getBoundingClientRect(), sx = (innerWidth - bw) / 2, sy = (vh - bh) / 2 - vh * .02, sc = 1 + (lr.width / bw - 1) * e;
     big.style.transform = `translate(${sx + (lr.left - sx) * e}px,${sy + (lr.top - sy) * e}px) scale(${sc})`;
-    big.classList.toggle('gone', p >= 1); body.classList.toggle('intro', p < 1); blab.style.opacity = Math.max(0, 1 - p * 4).toFixed(2);
+    big.classList.toggle('gone', p >= 1); body.classList.toggle('intro', p < 1); big.querySelectorAll('.blab,.btag').forEach(t => t.style.opacity = Math.max(0, 1 - p * 4).toFixed(2));
     if (p > 0 && p < 1) LQ['2'].goal = Math.sin(p * Math.PI) * 40;
     wordsOnScroll($('#homeSay'));
     $('#mq').style.transform = `translateX(${-(st * .6) % (innerWidth * 2)}px)`;
@@ -1420,6 +1455,13 @@ body.menu-open .logo{opacity:1}
       context: 'Two cars, once a decade, by sixty-one people. Everything had to feel rare and slow, from the countdown to delivery day to the registry of every car ever made.',
       challenge: 'Let people touch a car they will never buy. Turn the twin, mix the paint, sit in the cockpit, then read the seven rules that keep it rare.',
       outcome: 'Designed and built in Modulify. It is live, so go and watch the line.' },
+    orbithop: { dev: 'phone', disc: 'Game design / Build', plat: 'Browser, mobile first', year: '2026', role: 'Designed and built it',
+      intro: 'A free one-tap arcade game. Hop between two rings, dodge the bars, and fly real space missions from Sputnik to the Sun.',
+      hl: [['Modes', 'Free play, daily run, zen, mirror, boss rounds and the journey'], ['Worlds', 'Eight painted worlds and a shop of skins and trails']],
+      idea: 'One tap. Two rings. Do not crash. The whole game had to make sense in a second.',
+      context: 'The journey turns a simple loop into a story: Sputnik, Mercury, Apollo, Voyager, each mission with its own sky.',
+      challenge: 'Keep one tap interesting for a long time. Modes, daily missions, worlds and a shop give people reasons to come back.',
+      outcome: 'Designed and built end to end. Free to play in the browser.' },
     menturr: { dev: 'desk', disc: 'Product design / Research', plat: 'Web app', year: 'v1', role: 'Sole designer',
       intro: 'A mentorship platform for booking 1:1 and group sessions.',
       hl: [['Client', 'CodeDr'], ['Research', '5 interviews, competitor teardown']],
@@ -1479,7 +1521,7 @@ body.menu-open .logo{opacity:1}
       h += `<div class="c-full">${fig('bands:-22deg:2', ph ? '16/8' : '16/9', ph ? phone(p, 0, 't0', 19, 40) : desk(p, 0, 't0', 64, 40))}</div><p class="c-soon rv">Full case study soon</p>${more}${next}</div>`;
       return h;
     }
-    const PKS = { vela: { idea: 0, full: [1, 2, 3], ctx: 12, ch: [11, 4, 7, 6], strip: [5, 8, 9, 10, 13, 14, 15] }, rondo: { idea: 0, full: [3, 6, 8], ctx: 1, ch: [4, 5, 7, 13], strip: [2, 9, 10, 11, 12] }, obol: { idea: 0, full: [3, 4, 5], ctx: 2, ch: [8, 10, 11, 12], strip: [1, 6, 7, 9, 13, 14, 15] }, fleeep: { idea: 0, full: [2, 3, 10], ctx: 1, ch: [4, 6, 7, 9], strip: [5, 8, 11, 12, 13] }, wander: { idea: 0, full: [1, 2, 3], ctx: 4, ch: [5, 6, 7, 8], strip: [9, 10, 11, 12, 13, 14, 15] },
+    const PKS = { vela: { idea: 0, full: [1, 2, 3], ctx: 12, ch: [11, 4, 7, 6], strip: [5, 8, 9, 10, 13, 14, 15] }, rondo: { idea: 0, full: [3, 6, 8], ctx: 1, ch: [4, 5, 7, 13], strip: [2, 9, 10, 11, 12] }, obol: { idea: 0, full: [3, 4, 5], ctx: 2, ch: [8, 10, 11, 12], strip: [1, 6, 7, 9, 13, 14, 15] }, orbithop: { idea: 0, full: [2, 5, 4], ctx: 4, ch: [6, 7, 8, 9], strip: [3, 10, 11, 12, 13, 14] }, fleeep: { idea: 0, full: [2, 3, 10], ctx: 1, ch: [4, 6, 7, 9], strip: [5, 8, 11, 12, 13] }, wander: { idea: 0, full: [1, 2, 3], ctx: 4, ch: [5, 6, 7, 8], strip: [9, 10, 11, 12, 13, 14, 15] },
       openrefine: { idea: 0, full: [1, 2], ctx: 3, ch: [4], strip: [5, 6, 7, 8] }, assetpro: { idea: 0, full: [1, 2], ctx: 3, ch: [4], strip: [5, 6, 7, 8, 9, 10] },
       menturr: { idea: 0, full: [1, 2], ctx: 3, ch: [4], strip: [5, 6, 7, 8] }, pfw: { idea: 0, full: [3, 5], ctx: 2, ch: [7], strip: [4, 6, 8, 9, 10, 11, 1] }, pyrios: { idea: 0, full: [6, 7], ctx: 1, ch: [4], strip: [2, 3, 5, 8, 9, 10, 11, 12, 13] }, aethon: { idea: 0, full: [3, 4], ctx: 5, ch: [6], strip: [7, 8, 9, 10, 11, 12, 13, 14] }, kirgawa: { idea: 0, full: [1, 2], ctx: 3, ch: [4], strip: [5, 6, 7, 8, 9, 10] } };
     const PK = PKS[p.id] ? PKS[p.id] : ph ? { idea: 0, full: [1, 0, 2], ctx: 2, ch: [0, 0, 0, 0], strip: [0, 1, 2, 3, 0, 1] } : { idea: 0, full: [1, 2], ctx: 2, ch: [0], strip: [0, 1, 2, 0, 1] };
@@ -1556,7 +1598,12 @@ body.menu-open .logo{opacity:1}
     body.classList.remove('switching'); Fluid.splash(clickX, clickY);
     busy = false;
   }
-  function setHash(h) { try { history.replaceState(null, '', h ? '#' + h : location.pathname + location.search); } catch (_) {} }
+  function setHash(h) {
+    try {
+      if (window.__PATHS) { const isP = h && byId(h) >= 0; history.replaceState(null, '', isP ? `/work/${h}/` : '/' + (h ? '#' + h : '')); return; }
+      history.replaceState(null, '', h ? '#' + h : location.pathname + location.search);
+    } catch (_) {}
+  }
   document.addEventListener('click', e => {
     const g = e.target.closest('[data-go]'); if (g) { go(g.dataset.go); return; }
     const o = e.target.closest('[data-open]'); if (o) { go('project', { i: byId(o.dataset.open) }); return; }
@@ -1568,7 +1615,7 @@ body.menu-open .logo{opacity:1}
 
 
   /* ---------- start ---------- */
-  const h = location.hash.slice(1), pi = byId(h);
+  const pm = location.pathname.match(/\/work\/([\w-]+)/), h = pm ? pm[1] : location.hash.slice(1), pi = byId(h);
   if (pi >= 0) show('project', { i: pi });
   else if (['work', 'about', 'contact', 'writing'].includes(h)) show(h, {});
   else {
