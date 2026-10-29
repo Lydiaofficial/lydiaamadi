@@ -558,11 +558,13 @@ body.menu-open .logo{opacity:1}
 #case .c-dshot{position:relative;overflow:hidden;background:#fff;min-height:0}
 #case .c-dshot img{position:absolute;left:0;top:0;width:100%;display:block}
 #case .c-dshot.top img{height:100%;object-fit:cover;object-position:50% 0}
+#case .c-dshot.wide img{object-position:0 0}
 #case .c-dshot.contain{background:#efeff1}
 #case .c-dshot.contain img{inset:0;height:100%;object-fit:contain;padding:5%;box-sizing:border-box}
 #case .c-dshot.pan img{height:auto;animation:dpan var(--dur,12s) cubic-bezier(.45,0,.55,1) infinite alternate}
 @keyframes dpan{0%,12%{transform:translateY(0)}88%,100%{transform:translateY(var(--ty))}}
 .desk .scr img{object-position:50% 0}
+.cv-desk .scr img{object-position:0 0}
 #case .c-bar{display:flex;align-items:center;gap:.9cqw;padding:0 2cqw;border-bottom:1px solid var(--sk)}
 #case .c-bar i{width:1.1cqw;height:1.1cqw;border-radius:50%;background:var(--sk)}
 #case .c-bar span{margin:0 auto;width:30%;height:1.8cqw;border-radius:1cqw;background:var(--sk)}
@@ -1005,10 +1007,12 @@ body.menu-open .logo{opacity:1}
     { id: 'fleeep', n: 'Fleeep', y: '2026', kind: 'PWA', cat: 'apps', short: 'Notes and inspiration', one: 'A notes app that doubles as a place to keep inspiration. In private beta.', meta: ['Designed and built end to end', 'PWA on Cloudflare', 'Private beta'], say: 'NOTES [and] INSPIRATION.' },
     { id: 'rondo', n: 'Rondo', y: '2026', kind: 'Concept', cat: 'apps', short: 'Savings circles', one: 'A savings circle app. Friends pay in each round and one person takes the pot.', meta: ['Ajo and esusu, made safe', 'Escrow, ID checks, safety deposits'], say: 'SAVE [in] TURNS.' },
     { id: 'obol', n: 'Obol', y: '2026', kind: 'Concept', cat: 'apps', short: 'Subscription wallet', one: 'A wallet that pays your subscriptions for you, with a limit on every one.', meta: ['Interactive concept', 'Limits on every subscription'], say: 'PAY ONCE, [stay in] CONTROL.' },
-    ...[['aethon', 'Aethon Aero'], ['pyrios', 'Pyrios'], ['fairly', 'Fairly'], ['orbithop', 'Orbit Hop'], ['pfw', 'Paris Fashion Week'], ['lucid', 'Lucid']].map(([id, n]) => ({ id, n, y: '', kind: '', cat: null, short: 'Case study soon', one: 'Case study soon.', meta: [], say: `${n.toUpperCase()}. [Soon.]` }))
+    { id: 'aethon', n: 'Aethon Aero', y: '2026', kind: 'Website', cat: 'web', short: 'Aerospace site', one: 'A concept site for an aerospace company building sixth-generation aircraft.', meta: ['Built in Modulify', 'Interactive motion'], say: 'THE SKY, [re-engineered.]' },
+    { id: 'pfw', n: 'Paris Fashion Week', y: '2026', kind: 'Website', cat: 'web', short: 'Fashion week site', one: 'A concept site for Paris Fashion Week, Womenswear Spring–Summer 2027.', meta: ['Built in Modulify', 'Scroll-driven motion'], say: 'TAKE YOUR [seat.]' },
+    ...[['pyrios', 'Pyrios'], ['fairly', 'Fairly'], ['orbithop', 'Orbit Hop'], ['lucid', 'Lucid']].map(([id, n]) => ({ id, n, y: '', kind: '', cat: null, short: 'Case study soon', one: 'Case study soon.', meta: [], say: `${n.toUpperCase()}. [Soon.]` }))
   ];
   const FEATURED = ['vela', 'obol', 'openrefine', 'rondo', 'assetpro', 'wander', 'fleeep', 'menturr', 'kirgawa', 'pfw'];
-  const CATS = { apps: 'Apps', dashboards: 'Dashboards', tools: 'Open-source tools' };
+  const CATS = { apps: 'Apps', dashboards: 'Dashboards', tools: 'Open-source tools', web: 'Websites' };
   const ART = {
     vela: '<rect pathLength="1" x="30" y="24" width="140" height="92" rx="12"/><rect pathLength="1" x="46" y="48" width="24" height="18" rx="3"/><path pathLength="1" d="M46 92h52M46 102h30"/><path pathLength="1" d="M146 98s-12-7-12-14a6 6 0 0112-3 6 6 0 0112 3c0 7-12 14-12 14z"/>',
     assetpro: '<path pathLength="1" d="M40 28v70M46 28v70M50 28v70M58 28v70M62 28v70M70 28v70M78 28v70M82 28v70M90 28v70M98 28v70M104 28v70M108 28v70M116 28v70M124 28v70M128 28v70M136 28v70M142 28v70M150 28v70M156 28v70M160 28v70"/><path pathLength="1" d="M30 63h140" stroke-dasharray="3 4"/><path pathLength="1" d="M40 110h60"/>',
@@ -1078,9 +1082,9 @@ body.menu-open .logo{opacity:1}
   /* cover photos, per project (Pexels) */
   const BGS = {"menturr": "images/bg/menturr.jpg", "pfw": "images/bg/pfw.jpg", "wander": "images/bg/wander.jpg", "openrefine": "images/bg/openrefine.jpg", "fleeep": "images/bg/fleeep.jpg", "vela": "images/bg/vela.jpg", "rondo": "images/bg/rondo.jpg", "assetpro": "images/bg/assetpro.jpg", "obol": "images/bg/obol.jpg", "aethon": "images/bg/aethon.jpg", "kirgawa": "images/bg/kirgawa.jpg"};
   /* real screens, per project (cropped from the designs) */
-  const SHOTS = {"obol": ["images/obol/00.jpg", "images/obol/01.jpg", "images/obol/02.jpg", "images/obol/03.jpg", "images/obol/04.jpg", "images/obol/05.jpg", "images/obol/06.jpg", "images/obol/07.jpg", "images/obol/08.jpg", "images/obol/09.jpg", "images/obol/10.jpg", "images/obol/11.jpg", "images/obol/12.jpg", "images/obol/13.jpg", "images/obol/14.jpg", "images/obol/15.jpg"], "fleeep": ["images/fleeep/00.jpg", "images/fleeep/01.jpg", "images/fleeep/02.jpg", "images/fleeep/03.jpg", "images/fleeep/04.jpg", "images/fleeep/05.jpg", "images/fleeep/06.jpg", "images/fleeep/07.jpg", "images/fleeep/08.jpg", "images/fleeep/09.jpg", "images/fleeep/10.jpg", "images/fleeep/11.jpg", "images/fleeep/12.jpg", "images/fleeep/13.jpg"], "openrefine": ["images/openrefine/00.jpg", "images/openrefine/01.jpg", "images/openrefine/02.jpg", "images/openrefine/03.jpg", "images/openrefine/04.jpg", "images/openrefine/05.jpg", "images/openrefine/06.jpg", "images/openrefine/07.jpg", "images/openrefine/08.jpg"], "assetpro": ["images/assetpro/00.jpg", "images/assetpro/01.jpg", "images/assetpro/02.jpg", "images/assetpro/03.jpg", "images/assetpro/04.jpg", "images/assetpro/05.jpg", "images/assetpro/06.jpg", "images/assetpro/07.jpg", "images/assetpro/08.jpg", "images/assetpro/09.jpg", "images/assetpro/10.jpg"], "menturr": ["images/menturr/00.jpg", "images/menturr/01.jpg", "images/menturr/02.jpg", "images/menturr/03.jpg", "images/menturr/04.jpg", "images/menturr/05.jpg", "images/menturr/06.jpg", "images/menturr/07.jpg", "images/menturr/08.jpg"], "kirgawa": ["images/kirgawa/00.jpg", "images/kirgawa/01.jpg", "images/kirgawa/02.jpg", "images/kirgawa/03.jpg", "images/kirgawa/04.jpg", "images/kirgawa/05.jpg", "images/kirgawa/06.jpg", "images/kirgawa/07.jpg", "images/kirgawa/08.jpg", "images/kirgawa/09.jpg", "images/kirgawa/10.jpg"], "wander": ["images/wander/00.jpg", "images/wander/01.jpg", "images/wander/02.jpg", "images/wander/03.jpg", "images/wander/04.jpg", "images/wander/05.jpg", "images/wander/06.jpg", "images/wander/07.jpg", "images/wander/08.jpg", "images/wander/09.jpg", "images/wander/10.jpg", "images/wander/11.jpg", "images/wander/12.jpg", "images/wander/13.jpg", "images/wander/14.jpg", "images/wander/15.jpg"], "vela": ["images/vela/00.jpg", "images/vela/01.jpg", "images/vela/02.jpg", "images/vela/03.jpg", "images/vela/04.jpg", "images/vela/05.jpg", "images/vela/06.jpg", "images/vela/07.jpg", "images/vela/08.jpg", "images/vela/09.jpg", "images/vela/10.jpg", "images/vela/11.jpg", "images/vela/12.jpg", "images/vela/13.jpg", "images/vela/14.jpg", "images/vela/15.jpg"], "rondo": ["images/rondo/00.jpg", "images/rondo/01.jpg", "images/rondo/02.jpg", "images/rondo/03.jpg", "images/rondo/04.jpg", "images/rondo/05.jpg", "images/rondo/06.jpg", "images/rondo/07.jpg", "images/rondo/08.jpg", "images/rondo/09.jpg", "images/rondo/10.jpg", "images/rondo/11.jpg", "images/rondo/12.jpg", "images/rondo/13.jpg"]};
+  const SHOTS = {"pfw": ["images/pfw/00.jpg", "images/pfw/01.jpg", "images/pfw/02.jpg", "images/pfw/03.jpg", "images/pfw/04.jpg", "images/pfw/05.jpg", "images/pfw/06.jpg", "images/pfw/07.jpg", "images/pfw/08.jpg", "images/pfw/09.jpg", "images/pfw/10.jpg", "images/pfw/11.jpg", "images/pfw/12.jpg"], "aethon": ["images/aethon/00.jpg", "images/aethon/01.jpg", "images/aethon/02.jpg", "images/aethon/03.jpg", "images/aethon/04.jpg", "images/aethon/05.jpg", "images/aethon/06.jpg", "images/aethon/07.jpg", "images/aethon/08.jpg", "images/aethon/09.jpg", "images/aethon/10.jpg", "images/aethon/11.jpg", "images/aethon/12.jpg", "images/aethon/13.jpg", "images/aethon/14.jpg", "images/aethon/15.jpg"], "obol": ["images/obol/00.jpg", "images/obol/01.jpg", "images/obol/02.jpg", "images/obol/03.jpg", "images/obol/04.jpg", "images/obol/05.jpg", "images/obol/06.jpg", "images/obol/07.jpg", "images/obol/08.jpg", "images/obol/09.jpg", "images/obol/10.jpg", "images/obol/11.jpg", "images/obol/12.jpg", "images/obol/13.jpg", "images/obol/14.jpg", "images/obol/15.jpg"], "fleeep": ["images/fleeep/00.jpg", "images/fleeep/01.jpg", "images/fleeep/02.jpg", "images/fleeep/03.jpg", "images/fleeep/04.jpg", "images/fleeep/05.jpg", "images/fleeep/06.jpg", "images/fleeep/07.jpg", "images/fleeep/08.jpg", "images/fleeep/09.jpg", "images/fleeep/10.jpg", "images/fleeep/11.jpg", "images/fleeep/12.jpg", "images/fleeep/13.jpg"], "openrefine": ["images/openrefine/00.jpg", "images/openrefine/01.jpg", "images/openrefine/02.jpg", "images/openrefine/03.jpg", "images/openrefine/04.jpg", "images/openrefine/05.jpg", "images/openrefine/06.jpg", "images/openrefine/07.jpg", "images/openrefine/08.jpg"], "assetpro": ["images/assetpro/00.jpg", "images/assetpro/01.jpg", "images/assetpro/02.jpg", "images/assetpro/03.jpg", "images/assetpro/04.jpg", "images/assetpro/05.jpg", "images/assetpro/06.jpg", "images/assetpro/07.jpg", "images/assetpro/08.jpg", "images/assetpro/09.jpg", "images/assetpro/10.jpg"], "menturr": ["images/menturr/00.jpg", "images/menturr/01.jpg", "images/menturr/02.jpg", "images/menturr/03.jpg", "images/menturr/04.jpg", "images/menturr/05.jpg", "images/menturr/06.jpg", "images/menturr/07.jpg", "images/menturr/08.jpg"], "kirgawa": ["images/kirgawa/00.jpg", "images/kirgawa/01.jpg", "images/kirgawa/02.jpg", "images/kirgawa/03.jpg", "images/kirgawa/04.jpg", "images/kirgawa/05.jpg", "images/kirgawa/06.jpg", "images/kirgawa/07.jpg", "images/kirgawa/08.jpg", "images/kirgawa/09.jpg", "images/kirgawa/10.jpg"], "wander": ["images/wander/00.jpg", "images/wander/01.jpg", "images/wander/02.jpg", "images/wander/03.jpg", "images/wander/04.jpg", "images/wander/05.jpg", "images/wander/06.jpg", "images/wander/07.jpg", "images/wander/08.jpg", "images/wander/09.jpg", "images/wander/10.jpg", "images/wander/11.jpg", "images/wander/12.jpg", "images/wander/13.jpg", "images/wander/14.jpg", "images/wander/15.jpg"], "vela": ["images/vela/00.jpg", "images/vela/01.jpg", "images/vela/02.jpg", "images/vela/03.jpg", "images/vela/04.jpg", "images/vela/05.jpg", "images/vela/06.jpg", "images/vela/07.jpg", "images/vela/08.jpg", "images/vela/09.jpg", "images/vela/10.jpg", "images/vela/11.jpg", "images/vela/12.jpg", "images/vela/13.jpg", "images/vela/14.jpg", "images/vela/15.jpg"], "rondo": ["images/rondo/00.jpg", "images/rondo/01.jpg", "images/rondo/02.jpg", "images/rondo/03.jpg", "images/rondo/04.jpg", "images/rondo/05.jpg", "images/rondo/06.jpg", "images/rondo/07.jpg", "images/rondo/08.jpg", "images/rondo/09.jpg", "images/rondo/10.jpg", "images/rondo/11.jpg", "images/rondo/12.jpg", "images/rondo/13.jpg"]};
   /* height / width of each desktop screen, for fit and slow scroll */
-  const SHOTR = {"openrefine": [0.914, 0.859, 0.487, 0.914, 0.399, 0.599, 0.276, 0.2, 0.16], "assetpro": [1.37, 0.828, 0.962, 0.824, 0.936, 0.92, 0.908, 1.372, 1.65, 0.962, 0.968], "menturr": [4.0, 1.545, 1.545, 0.782, 0.834, 0.875, 1.032, 2.193, 0.607], "kirgawa": [1.06, 1.23, 0.712, 0.712, 0.712, 0.841, 0.712, 0.712, 0.712, 1.052, 0.643]};
+  const SHOTR = {"openrefine": [0.914, 0.859, 0.487, 0.914, 0.399, 0.599, 0.276, 0.2, 0.16], "assetpro": [1.37, 0.828, 0.962, 0.824, 0.936, 0.92, 0.908, 1.372, 1.65, 0.962, 0.968], "menturr": [4.0, 1.545, 1.545, 0.782, 0.834, 0.875, 1.032, 2.193, 0.607], "kirgawa": [1.06, 1.23, 0.712, 0.712, 0.712, 0.841, 0.712, 0.712, 0.712, 1.052, 0.643], "pfw": [0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495], "aethon": [0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, 0.495]};
   const LAYOUT = {
     vela:       { col: 'L', dev: 'phone', w: '78%',  o: 1, d: 'Rewards card',   tag: 'Product design / Research',       ang: '-24deg', bg: null, screen: null },
     openrefine: { col: 'R', dev: 'desk',  w: '100%', o: 2, d: 'Shipped in 3.8', tag: 'UX research / Interaction design', ang: '18deg',  bg: null, screen: null },
@@ -1091,7 +1095,8 @@ body.menu-open .logo{opacity:1}
     rondo:      { col: 'R', dev: 'phone', w: '78%',  o: 6, d: 'Savings circles', tag: 'Concept / Product design / Build', ang: '8deg',   bg: null, screen: null, shot: 3, inset: true, end: true },
     obol:       { col: 'L', dev: 'phone', w: '78%',  o: 9, d: 'Subscription wallet', tag: 'Concept / Product design / Build', ang: '-16deg', bg: null, screen: null, shot: 3, inset: true },
     menturr:    { col: 'L', dev: 'desk',  w: '100%', o: 7, d: 'Mentorship',     tag: 'Product design / Research',       ang: '-20deg', bg: null, screen: null },
-    pfw:        { col: 'R', dev: 'desk',  w: '100%', o: 8, d: 'Soon',           tag: 'Design',                          ang: '24deg',  bg: null, screen: null }
+    pfw:        { col: 'R', dev: 'desk',  w: '100%', o: 8, d: 'Fashion week site', tag: 'Web design / Motion / Build', ang: '24deg',  bg: null, screen: null },
+    aethon:     { col: 'L', dev: 'desk',  w: '100%', o: 11, d: 'Aerospace site', tag: 'Web design / Motion / Build', ang: '-18deg', bg: null, screen: null }
   };
   Object.keys(BGS).forEach(id => { if (LAYOUT[id]) LAYOUT[id].bg = BGS[id]; });
   Object.keys(SHOTS).forEach(id => { if (LAYOUT[id]) LAYOUT[id].screen = SHOTS[id][LAYOUT[id].shot ?? (LAYOUT[id].dev === 'desk' ? 0 : 2)] || SHOTS[id][0]; });
@@ -1117,7 +1122,7 @@ body.menu-open .logo{opacity:1}
   works.forEach(a => a.addEventListener('keydown', e => { if (e.key === 'Enter') go('project', { i: byId(a.dataset.open) }); }));
 
   /* ---------- work page: every project, shown like Selected work ---------- */
-  const WORK_LEAD = ['vela', 'obol', 'rondo', 'fleeep', 'wander', 'assetpro', 'openrefine', 'menturr', 'kirgawa', 'pfw'];
+  const WORK_LEAD = ['vela', 'obol', 'rondo', 'fleeep', 'aethon', 'pfw', 'wander', 'assetpro', 'openrefine', 'menturr', 'kirgawa'];
   const WORK_ORDER = [...WORK_LEAD, ...P.map(p => p.id).filter(id => !WORK_LEAD.includes(id))];
   const ANGS = ['-24deg', '18deg', '-12deg', '30deg', '-34deg', '8deg', '-20deg', '24deg'];
   const allWorks = WORK_ORDER.map((id, k) => {
@@ -1130,7 +1135,7 @@ body.menu-open .logo{opacity:1}
     a.addEventListener('keydown', e => { if (e.key === 'Enter') go('project', { i: byId(id) }); });
     return a;
   });
-  const WCATS = [[null, 'All'], ['apps', 'Apps'], ['dashboards', 'Dashboards'], ['tools', 'Open source']];
+  const WCATS = [[null, 'All'], ['apps', 'Apps'], ['dashboards', 'Dashboards'], ['web', 'Websites'], ['tools', 'Open source']];
   let wcat = null;
   function wfilter(cat) {
     wcat = cat || null; const L = $('#wallL'), R = $('#wallR'); L.innerHTML = ''; R.innerHTML = '';
@@ -1365,6 +1370,20 @@ body.menu-open .logo{opacity:1}
       context: 'Set a limit on each subscription. If the price creeps over it, Obol blocks the charge until you say yes.',
       challenge: 'Make a wallet people trust with their money. You approve every payment, card numbers are never stored, and the fees are shown before you confirm.',
       outcome: 'An interactive concept, designed and built end to end. Open it on your phone and try it.' },
+    pfw: { dev: 'desk', disc: 'Web design / Motion', plat: 'Website', year: '2026', role: 'Designed and built it', link: 'https://parisfw26.modulify.website/',
+      intro: 'A concept site for Paris Fashion Week, Womenswear Spring–Summer 2027.',
+      hl: [['Sections', 'Runway, calendar, schedule, 101 houses, backstage, outside'], ['Motion', 'A scroll-driven runway, a live Paris clock, hover previews']],
+      idea: 'Fashion week, treated like a magazine you scroll through. Big serif type, arched images and one long walk down the runway.',
+      context: 'Twice a year Paris becomes the runway. The site holds three calendars, nine days of shows and 101 houses without feeling like a timetable.',
+      challenge: 'Make a schedule feel like fashion. Days become a strip of big numbers, the houses an A to Z you can hover, backstage a scattered stack of photos.',
+      outcome: 'Designed and built in Modulify. It is live, so go and take your seat.' },
+    aethon: { dev: 'desk', disc: 'Web design / Motion', plat: 'Website', year: '2026', role: 'Designed and built it', link: 'https://aethon.modulify.website/',
+      intro: 'A concept site for an aerospace company building sixth-generation aircraft.',
+      hl: [['Sections', 'Fleet, engineering, aero, propulsion, stealth, forge, flight test'], ['Interaction', 'Drag to fly, a live wind tunnel, an airframe you take apart']],
+      idea: 'Sell an aircraft like a launch, not a brochure. The site boots up like a cockpit, then hands you the controls.',
+      context: 'Three aircraft, one AI co-pilot. Almost every section is something you can play with: fly the jet, run the wind tunnel, scan the skin.',
+      challenge: 'Make dense engineering readable. Big type, a few numbers per section, and an altitude gauge that climbs as you scroll.',
+      outcome: 'Designed and built in Modulify. It is live, so take it for a flight.' },
     menturr: { dev: 'desk', disc: 'Product design / Research', plat: 'Web app', year: 'v1', role: 'Sole designer',
       intro: 'A mentorship platform for booking 1:1 and group sessions.',
       hl: [['Client', 'CodeDr'], ['Research', '5 interviews, competitor teardown']],
@@ -1400,7 +1419,7 @@ body.menu-open .logo{opacity:1}
   const scr = (p, k, t) => SHOTS[p.id] ? `<div class="c-sc c-shot${INSET[p.id] ? ' inset' : ''}"><img src="${SHOTS[p.id][k % SHOTS[p.id].length]}" alt="" loading="lazy"></div>` : `<div class="c-sc ${t}">${p.id === 'vela' ? VELA[k % 4]() : GPH[k % 4](p)}</div>`;
   const phone = (p, k, t, pw, par) => `<div class="c-ph c-par" style="--pw:${pw}cqw" data-par="${par}"><div class="c-phi">${scr(p, k, t)}</div></div>`;
   const VIS = .579;
-  const dshot = (p, k) => { const L = SHOTS[p.id], i = k % L.length, r = (SHOTR[p.id] || [])[i] || .6, mode = r < .5 ? 'contain' : r > .72 ? 'pan' : 'top';
+  const dshot = (p, k) => { const L = SHOTS[p.id], i = k % L.length, r = (SHOTR[p.id] || [])[i] || .6, mode = r < .42 ? 'contain' : r > .72 ? 'pan' : r < .52 ? 'top wide' : 'top';
     return `<div class="c-dshot ${mode}" style="--ty:${(-(r - VIS) / r * 100).toFixed(1)}%;--dur:${Math.min(26, 6 + r * 5).toFixed(1)}s"><img src="${L[i]}" alt="" loading="lazy"></div>`; };
   const dinner = (p, k) => SHOTS[p.id] ? dshot(p, k) : `<div class="c-ds"><div class="c-side"><b>${p.n}</b><i class="on"></i><i></i><i></i><i></i><i></i></div><div class="c-main">${GDK[k % 3](p)}</div></div>`;
   const desk = (p, k, t, dw, par) => `<div class="c-dk c-par" style="--dw:${dw}cqw" data-par="${par}"><div class="c-dki ${t}"><div class="c-bar"><i></i><i></i><i></i><span></span></div>${dinner(p, k)}</div></div>`;
@@ -1426,7 +1445,7 @@ body.menu-open .logo{opacity:1}
     }
     const PKS = { vela: { idea: 0, full: [1, 2, 3], ctx: 12, ch: [11, 4, 7, 6], strip: [5, 8, 9, 10, 13, 14, 15] }, rondo: { idea: 0, full: [3, 6, 8], ctx: 1, ch: [4, 5, 7, 13], strip: [2, 9, 10, 11, 12] }, obol: { idea: 0, full: [3, 4, 5], ctx: 2, ch: [8, 10, 11, 12], strip: [1, 6, 7, 9, 13, 14, 15] }, fleeep: { idea: 0, full: [2, 3, 10], ctx: 1, ch: [4, 6, 7, 9], strip: [5, 8, 11, 12, 13] }, wander: { idea: 0, full: [1, 2, 3], ctx: 4, ch: [5, 6, 7, 8], strip: [9, 10, 11, 12, 13, 14, 15] },
       openrefine: { idea: 0, full: [1, 2], ctx: 3, ch: [4], strip: [5, 6, 7, 8] }, assetpro: { idea: 0, full: [1, 2], ctx: 3, ch: [4], strip: [5, 6, 7, 8, 9, 10] },
-      menturr: { idea: 0, full: [1, 2], ctx: 3, ch: [4], strip: [5, 6, 7, 8] }, kirgawa: { idea: 0, full: [1, 2], ctx: 3, ch: [4], strip: [5, 6, 7, 8, 9, 10] } };
+      menturr: { idea: 0, full: [1, 2], ctx: 3, ch: [4], strip: [5, 6, 7, 8] }, pfw: { idea: 0, full: [3, 5], ctx: 2, ch: [7], strip: [4, 6, 8, 9, 10, 11, 1] }, aethon: { idea: 0, full: [3, 4], ctx: 5, ch: [6], strip: [7, 8, 9, 10, 11, 12, 13, 14] }, kirgawa: { idea: 0, full: [1, 2], ctx: 3, ch: [4], strip: [5, 6, 7, 8, 9, 10] } };
     const PK = PKS[p.id] ? PKS[p.id] : ph ? { idea: 0, full: [1, 0, 2], ctx: 2, ch: [0, 0, 0, 0], strip: [0, 1, 2, 3, 0, 1] } : { idea: 0, full: [1, 2], ctx: 2, ch: [0], strip: [0, 1, 2, 0, 1] };
     const txt = (t, body, cls = '') => body ? `<div class="c-txt ${cls}"><h2 class="rv">${t}</h2><p class="rv d1">${body}</p></div>` : '';
     h += `<section class="c-two"><div class="c-txt"><div class="c-hl rv">${c.hl.map(([a, b], i) => `<div><span>${a}</span><span>${b}</span><span>${String(i + 1).padStart(2, '0')}</span></div>`).join('')}</div><h2 class="rv">The idea</h2><p class="rv d1">${c.idea}</p></div>${fig('terrain', ph ? '4/5' : '1/1', ph ? phone(p, PK.idea, 't0', 42, 40) : desk(p, PK.idea, 't0', 84, 40))}</section>`;
