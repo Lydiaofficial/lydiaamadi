@@ -1130,7 +1130,7 @@ body.menu-open .logo{opacity:1}
 
   /* ---------- home: big name, marquee, stack ---------- */
   const big = $('#bigname'), logo = $('.logo');
-  big.innerHTML = `<span class="sbox"><span class="bchars">${[...'LYDIA'].map((c, i) => `<span class="ch" style="--i:${i}">${c}</span>`).join('')}</span>${['tl', 'tr', 'bl', 'br'].map((c, k) => `<b class="h ${c}" style="--k:${k}"></b>`).join('')}<span class="blab">Product designer</span><span class="btag dk t1" style="--k:0">Builder</span><span class="btag ol t2" style="--k:1">UX research</span><span class="btag ol t4" style="--k:2">Design systems</span><span class="btag dk t3" style="--k:3">Based in the UK</span></span>`;
+  big.innerHTML = `<span class="sbox"><span class="bchars">${[...'LYDIA'].map((c, i) => `<span class="ch" style="--i:${i}">${c}</span>`).join('')}</span>${['tl', 'tr', 'bl', 'br'].map((c, k) => `<b class="h ${c}" style="--k:${k}"></b>`).join('')}<span class="blab">Product designer</span><span class="btag dk t1" style="--k:0">Builder</span></span>`;
   const blab = big.querySelector('.blab');
   big.querySelector('.bchars').style.filter = 'url(#liquid2)';
   $('#mq').innerHTML = Array(4).fill('<span>Product design</span><em>·</em><span>Design systems</span><em>·</em><span>User research</span><em>·</em><span>Prototyping</span><em>·</em>').join('');
