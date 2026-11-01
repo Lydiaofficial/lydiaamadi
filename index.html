@@ -720,6 +720,7 @@ body.menu-open .logo{opacity:1}
 .off i:first-of-type{margin-left:-.5em}
 .listen{font-weight:400;letter-spacing:-.035em}
 .toss .behind div{font-weight:400;letter-spacing:-.035em}
+.hlab b{font-weight:400;letter-spacing:-.02em}
 /* more tags around the name */
 .btag{position:absolute;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.02em;line-height:1;white-space:nowrap;padding:5px 9px;transition:background .5s,color .5s}
 .btag.dk{background:var(--fg);color:var(--bg)}
@@ -830,6 +831,12 @@ body.menu-open .logo{opacity:1}
     <div class="off"><span>Books</span><i>,</i><span>food</span><i>&amp;</i><span>Chelsea</span></div>
   </section>
   <section class="toss" id="toss" aria-label="Books, food and Chelsea to throw around"><div class="behind" aria-hidden="true"><div>Off the<br>clock</div></div></section>
+  <section class="hgal" id="hgal">
+    <div class="hgal-pin">
+      <div class="hrow" data-dir="1"><div class="hlab"><b>Food</b><span id="foodN">08</span></div><div class="htrack" id="foodTrack"></div></div>
+      <div class="hrow" data-dir="-1"><div class="hlab"><b>Chelsea Women</b><span id="cfcN">08</span></div><div class="htrack" id="cfcTrack"></div></div>
+    </div>
+  </section>
   <section class="ab-sec" style="padding-top:2vh">
     <a class="listen" href="https://open.spotify.com/playlist/2txMQqT5a0Ew4l3ZG0NPfH" target="_blank" rel="noopener"><span class="disc" aria-hidden="true"></span><span>Listening</span><span class="arr" aria-hidden="true">↗</span></a>
   </section>
@@ -1286,6 +1293,22 @@ body.menu-open .logo{opacity:1}
   new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { sg.classList.add('seen'); o.disconnect(); } }), { threshold: .2 }).observe(sg);
   $$('.tool', sg).forEach(t => t.addEventListener('pointerenter', () => ripple('1', 18, 400)));
 
+  /* ---------- about galleries: vertical scroll drives them sideways ---------- */
+  // Drop your own photos in here as { src: 'data:image/jpeg;base64,...' or an uploaded asset url, cap: 'Caption' }
+  const FOOD = Array.from({ length: 8 }, () => null);
+  const CFC = Array.from({ length: 8 }, () => null);
+  const tile = (item, k) => `<figure class="ph" style="margin:0">${item ? `<img src="${item.src}" alt="${item.cap || ''}" loading="lazy">` : '<span class="empty" aria-hidden="true">+</span>'}<span class="n">${String(k + 1).padStart(2, '0')}</span>${item && item.cap ? `<figcaption class="cap">${item.cap}</figcaption>` : ''}</figure>`;
+  $('#foodTrack').innerHTML = FOOD.map(tile).join(''); $('#cfcTrack').innerHTML = CFC.map(tile).join('');
+  $('#foodN').textContent = String(FOOD.length).padStart(2, '0'); $('#cfcN').textContent = String(CFC.length).padStart(2, '0');
+  function galScroll() {
+    if (view !== 'about') return;
+    const g = $('#hgal'), st = about.scrollTop, vh = innerHeight, p = Math.max(0, Math.min(1, (st - g.offsetTop) / (g.offsetHeight - vh)));
+    $$('.hrow', g).forEach(row => { const tr = row.querySelector('.htrack'), dist = Math.max(0, tr.scrollWidth - innerWidth), dir = +row.dataset.dir;
+      const x = dir > 0 ? -dist + p * dist : -p * dist; tr.style.transform = `translate3d(${x.toFixed(1)}px,0,0)`; });
+  }
+  about.addEventListener('scroll', () => requestAnimationFrame(galScroll), { passive: true });
+  addEventListener('resize', galScroll);
+
   /* ---------- about: books, food and Chelsea to throw around (three.js, loaded when near) ---------- */
   (function toss() {
     const el = $('#toss'); if (!el) return;
@@ -1666,7 +1689,7 @@ body.menu-open .logo{opacity:1}
     big.classList.toggle('gone', v !== 'home'); body.classList.toggle('intro', false); body.classList.remove('hovering');
     $$('.links button').forEach(b => b.setAttribute('aria-current', b.dataset.go === v || (v === 'project' && b.dataset.go === 'work') ? 'page' : 'false'));
     if (v === 'home') { requestAnimationFrame(() => { measure(); homeScroll(); }); setHash(''); }
-    else if (v === 'about') { about.scrollTop = 0; requestAnimationFrame(() => { revealRh(about); }); setHash('about'); }
+    else if (v === 'about') { about.scrollTop = 0; requestAnimationFrame(() => { galScroll(); revealRh(about); }); setHash('about'); }
     else if (v === 'work') { if (prev !== 'project') work.scrollTop = 0; if ('cat' in opts) wfilter(opts.cat); requestAnimationFrame(() => { workScroll(); if (prev !== 'project') revealRh(work); }); setHash('work'); }
     else if (v === 'project') { const p = P[opts.i]; last = opts.i; if (prev !== 'project') backTo = prev === 'home' ? 'home' : 'work'; buildCase(p); setHash(p.id); }
     else { const pg = v === 'contact' ? contact : writing; pg.scrollTop = 0; requestAnimationFrame(() => revealRh(pg)); setHash(v); }
