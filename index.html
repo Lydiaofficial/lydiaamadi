@@ -723,21 +723,6 @@ body.menu-open .logo{opacity:1}
 </style>
 </head>
 <body>
-<!-- ============ LOADER: clear drops gather into a pool, then the pool flows across the page ============ -->
-<canvas id="ldv" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:38;pointer-events:none;background:#fafafa"></canvas>
-<canvas id="ldd" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:41;pointer-events:none"></canvas>
-<script>
-(function () {
-  var seen = null; try { seen = sessionStorage.getItem('lydia-ld'); } catch (e) {}
-  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (seen || still) { ['ldv', 'ldd'].forEach(function (id) { var e = document.getElementById(id); e.parentNode.removeChild(e); }); window.__ld = Promise.resolve(); return; }
-  try { sessionStorage.setItem('lydia-ld', '1'); } catch (e) {}
-  window.__ldRun = true;
-  window.__ld = new Promise(function (r) { window.__ldFlow = r; });
-})();
-</script>
-
-
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <filter id="liquid" x="-20%" y="-30%" width="140%" height="160%"><feTurbulence id="lq1t" type="fractalNoise" baseFrequency="0.012 0.04" numOctaves="2" seed="2" result="n"/><feDisplacementMap id="lq1d" in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter>
@@ -934,7 +919,7 @@ body.menu-open .logo{opacity:1}
      LIQUID: WebGL fluid that inverts the page under the cursor
      ========================================================= */
   const Fluid = (() => {
-    const stub = { move() {}, burst() {}, splash() {}, lift() {}, pour() {}, ok: false };
+    const stub = { move() {}, burst() {}, splash() {}, lift() {}, ok: false };
     if (still) return stub;
     const cv = $('#fluid');
     const opts = { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, preserveDrawingBuffer: false };
@@ -994,7 +979,7 @@ body.menu-open .logo{opacity:1}
     try { init(); } catch (e) { cv.remove(); return stub; }
     const use = k => { gl.useProgram(P[k].p); return P[k].u; };
     function splat(x, y, dx, dy, amt) {
-      const asp = cv.width / cv.height; let rad = (small ? .0016 : .0011) * (splat.rs || 1); if (asp > 1) rad *= asp;
+      const asp = cv.width / cv.height; let rad = small ? .0016 : .0011; if (asp > 1) rad *= asp;
       let u = use('splat'); gl.uniform1i(u.uTarget, vel.r.at(0)); gl.uniform1f(u.aspectRatio, asp); gl.uniform2f(u.point, x, y); gl.uniform3f(u.color, dx, dy, 0); gl.uniform1f(u.radius, rad); blit(vel.wr); vel.swap();
       gl.uniform1i(u.uTarget, dye.r.at(0)); gl.uniform3f(u.color, amt, amt, amt); gl.uniform1f(u.radius, rad * 1.6); blit(dye.wr); dye.swap();
     }
@@ -1031,82 +1016,11 @@ body.menu-open .logo{opacity:1}
       },
       lift() { px = py = -1; },
       burst() {},
-      pour(x, y, vx, vy, amt, rs) { const keep = splat.rs; splat.rs = rs || 1; splat(x, y, vx, vy, amt); splat.rs = keep; },
       splash(x, y) { const nx = x / innerWidth, ny = 1 - y / innerHeight; for (let k = 0; k < 10; k++) { const a = k / 10 * 6.283; splat(nx + Math.cos(a) * .012, ny + Math.sin(a) * .012 * innerWidth / innerHeight, Math.cos(a) * 900, Math.sin(a) * 900, .45); } }
     };
   })();
   addEventListener('pointermove', e => Fluid.move(e.clientX, e.clientY), { passive: true });
   addEventListener('pointerup', e => { if (e.pointerType === 'touch') Fluid.lift && Fluid.lift(); });
-  /* ---------- loader: clear drops in the same water, a pool, then the pool flows across the page ---------- */
-  (function loader() {
-    if (!window.__ldRun) return;
-    const ov = $('#ldv'), dc = $('#ldd'), ox = ov.getContext('2d'), dx = dc.getContext('2d');
-    const done = () => { ov.remove(); dc.remove(); };
-    if (!Fluid.ok) { window.__ldFlow(); ov.style.transition = 'opacity .6s'; ov.style.opacity = 0; setTimeout(done, 650); return; }
-    let W, H, cx, cy, m; const dpr = Math.min(2, devicePixelRatio || 1);
-    const size = () => { W = innerWidth; H = innerHeight; [ov, dc].forEach(c => { c.width = W * dpr; c.height = H * dpr; c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0); }); cx = W / 2; cy = H * .55; m = Math.min(W, H); };
-    size(); addEventListener('resize', size);
-    const BG = getComputedStyle(body).backgroundColor || '#fafafa';
-    const P = (px, py, vx, vy, amt, r) => Fluid.pour(px / W, 1 - py / H, vx, -vy, amt, r);
-    const T = [0, 260, 470, 650, 800], FALL = 340;
-    const OFF = [[0, 0], [-.035, .01], [.03, -.008], [-.012, -.016], [.016, .014]].map(o => ({ x: o[0], y: o[1], hit: false }));
-    let ready = false, t0 = 0, tf = 0, hits = 0;
-    const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
-    const loaded = new Promise(r => document.readyState === 'complete' ? r() : addEventListener('load', r));
-    Promise.race([Promise.all([fonts, loaded]), sleep(2600)]).then(() => { ready = true; });
-    // fingers of water that run out from the pool when it flows
-    const N = 18, fingers = Array.from({ length: N }, (_, i) => ({ a: i / N * Math.PI * 2 + (Math.random() - .5) * .25, v: .75 + Math.random() * .55, r: 0 }));
-    const edge = a => { // reveal radius at angle a, smoothed between fingers
-      const s = (a / (Math.PI * 2) * N + N) % N, i = Math.floor(s), f = s - i, A = fingers[i].r, B = fingers[(i + 1) % N].r, k = f * f * (3 - 2 * f);
-      return A + (B - A) * k;
-    };
-    function drop(px, py, r, st) {
-      dx.save(); dx.translate(px, py); dx.scale(1 / Math.sqrt(st), st);
-      dx.beginPath(); dx.moveTo(0, -r * 2.3); dx.bezierCurveTo(r * .95, -r * 1.05, r, -r * .15, r, r * .3); dx.arc(0, r * .3, r, 0, Math.PI); dx.bezierCurveTo(-r, -r * .15, -r * .95, -r * 1.05, 0, -r * 2.3);
-      const g = dx.createRadialGradient(-r * .3, 0, r * .1, 0, r * .2, r * 1.4); g.addColorStop(0, 'rgba(255,255,255,.75)'); g.addColorStop(1, 'rgba(210,212,218,.35)');
-      dx.fillStyle = g; dx.fill(); dx.strokeStyle = 'rgba(0,0,0,.16)'; dx.lineWidth = 1; dx.stroke();
-      dx.beginPath(); dx.arc(r * .15, r * .45, r * .78, .15 * Math.PI, .85 * Math.PI); dx.strokeStyle = 'rgba(0,0,0,.14)'; dx.lineWidth = r * .22; dx.stroke();
-      dx.beginPath(); dx.ellipse(-r * .38, -r * .25, r * .16, r * .34, -.35, 0, Math.PI * 2); dx.fillStyle = 'rgba(255,255,255,.95)'; dx.fill();
-      dx.restore();
-    }
-    function frame(now) {
-      if (!t0) t0 = now; const t = now - t0;
-      dx.clearRect(0, 0, W, H);
-      if (!tf) {
-        ox.clearRect(0, 0, W, H); ox.fillStyle = BG; ox.fillRect(0, 0, W, H);
-        T.forEach((s, i) => {
-          const o = OFF[i], tx = cx + o.x * m, ty = cy + o.y * m, u = (t - s) / FALL;
-          if (u < 0 || o.hit) return;
-          if (u < 1) { const e = u * u; drop(tx, -40 + (ty + 40) * e, Math.max(3.5, m * .0055), 1 + e * .35); return; }
-          o.hit = true; hits++;
-          for (let k = 0; k < 12; k++) { const a = k / 12 * Math.PI * 2; P(tx + Math.cos(a) * 4, ty + Math.sin(a) * 4, Math.cos(a) * 160, Math.sin(a) * 160, .22, .32); }
-          P(tx, ty, 0, 0, .35, .45);
-        });
-        if (hits) { // keep the pool alive and slowly turning
-          const r = m * .006 * Math.sqrt(hits), a = t * .004;
-          for (let k = 0; k < 3; k++) { const b = a + k * 2.1; P(cx + Math.cos(b) * r, cy + Math.sin(b) * r * .8, -Math.sin(b) * 30, Math.cos(b) * 30, .05 + hits * .012, .3 + hits * .07); }
-        }
-        if (ready && hits === T.length && t > T[T.length - 1] + FALL + 380) { tf = now; window.__ldFlow(); }
-      } else {
-        const p = (now - tf) / 1000, far = Math.hypot(W, H);
-        let all = true;
-        fingers.forEach(f => {
-          f.r = m * .02 + far * 1.08 * Math.min(1, Math.pow(p * f.v, 1.5));
-          if (f.r < far) all = false;
-          const px = cx + Math.cos(f.a) * f.r, py = cy + Math.sin(f.a) * f.r;
-          if (f.r < far * 1.02) { P(px, py, Math.cos(f.a) * 180, Math.sin(f.a) * 180, .1, .35); }
-        });
-        ox.clearRect(0, 0, W, H); ox.fillStyle = BG; ox.fillRect(0, 0, W, H);
-        ox.globalCompositeOperation = 'destination-out'; ox.beginPath();
-        for (let i = 0; i <= 96; i++) { const a = i / 96 * Math.PI * 2, r = edge(a) * .93; i ? ox.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r) : ox.moveTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r); }
-        ox.closePath(); ox.fill(); ox.globalCompositeOperation = 'source-over';
-        if (all) { done(); return; }
-      }
-      requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-  })();
-
   /* a tap or click on empty space ripples the water; controls keep their own feedback */
   addEventListener('pointerdown', e => {
     if (e.button > 0 || e.target.closest('a,button,input,textarea,select,label,[data-open],[data-go],.dial,.menu,.np,.cv,.c-m')) return;
@@ -1715,7 +1629,7 @@ body.menu-open .logo{opacity:1}
   else if (['work', 'about', 'contact', 'writing'].includes(h)) show(h, {});
   else {
     show('home', {}); measure(); homeScroll();
-    (window.__ld || Promise.resolve()).then(() => { if (!still) { big.classList.add('rise'); LQ['2'].v = 70; LQ['2'].goal = 0; } });
+    if (!still) { big.classList.add('rise'); LQ['2'].v = 70; LQ['2'].goal = 0;  }
   }
   if (document.fonts) document.fonts.ready.then(() => { measure(); homeScroll(); });
 })();
