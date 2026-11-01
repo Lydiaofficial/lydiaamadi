@@ -225,6 +225,11 @@ body.hovering .say .w:not(.on){color:var(--dim)}
 .rowi .y{font-family:var(--mono);font-size:12px}
 .rowi .t{font-weight:800;text-transform:uppercase;letter-spacing:-.03em;font-size:clamp(1.2rem,2.4vw,2rem);line-height:1}
 .rowi .d{color:inherit;opacity:.65}
+.toss{position:relative;z-index:2;height:min(80vh,720px);margin:2vh 0;cursor:grab;touch-action:pan-y}
+.toss.grab{cursor:grabbing}
+.toss canvas{position:absolute;inset:0;display:block;width:100%;height:100%}
+.toss .behind{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.toss .behind div{font-weight:800;text-transform:uppercase;letter-spacing:-.05em;line-height:.85;font-size:clamp(3rem,13vw,12rem);text-align:center;opacity:.06}
 .hgal{position:relative;z-index:2;height:260vh}
 .hgal-pin{position:sticky;top:0;height:100vh;height:100svh;display:grid;align-content:center;gap:5vh;overflow:hidden;padding:80px 0 30px}
 .hrow{position:relative;display:grid;gap:12px}
@@ -819,12 +824,7 @@ body.menu-open .logo{opacity:1}
     <h2 class="ab-h">Off the clock</h2>
     <div class="off"><span>Books</span><i>,</i><span>food</span><i>&amp;</i><span>Chelsea</span></div>
   </section>
-  <section class="hgal" id="hgal">
-    <div class="hgal-pin">
-      <div class="hrow" data-dir="1"><div class="hlab"><b>Food</b><span id="foodN">08</span></div><div class="htrack" id="foodTrack"></div></div>
-      <div class="hrow" data-dir="-1"><div class="hlab"><b>Chelsea Women</b><span id="cfcN">08</span></div><div class="htrack" id="cfcTrack"></div></div>
-    </div>
-  </section>
+  <section class="toss" id="toss" aria-label="Books, food and Chelsea to throw around"><div class="behind" aria-hidden="true"><div>Off the<br>clock</div></div></section>
   <section class="ab-sec" style="padding-top:2vh">
     <a class="listen" href="https://open.spotify.com/playlist/2txMQqT5a0Ew4l3ZG0NPfH" target="_blank" rel="noopener"><span class="disc" aria-hidden="true"></span><span>Listening</span><span class="arr" aria-hidden="true">↗</span></a>
   </section>
@@ -1281,21 +1281,82 @@ body.menu-open .logo{opacity:1}
   new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { sg.classList.add('seen'); o.disconnect(); } }), { threshold: .2 }).observe(sg);
   $$('.tool', sg).forEach(t => t.addEventListener('pointerenter', () => ripple('1', 18, 400)));
 
-  /* ---------- about galleries: vertical scroll drives them sideways ---------- */
-  // Drop your own photos in here as { src: 'data:image/jpeg;base64,...' or an uploaded asset url, cap: 'Caption' }
-  const FOOD = Array.from({ length: 8 }, () => null);
-  const CFC = Array.from({ length: 8 }, () => null);
-  const tile = (item, k) => `<figure class="ph" style="margin:0">${item ? `<img src="${item.src}" alt="${item.cap || ''}" loading="lazy">` : '<span class="empty" aria-hidden="true">+</span>'}<span class="n">${String(k + 1).padStart(2, '0')}</span>${item && item.cap ? `<figcaption class="cap">${item.cap}</figcaption>` : ''}</figure>`;
-  $('#foodTrack').innerHTML = FOOD.map(tile).join(''); $('#cfcTrack').innerHTML = CFC.map(tile).join('');
-  $('#foodN').textContent = String(FOOD.length).padStart(2, '0'); $('#cfcN').textContent = String(CFC.length).padStart(2, '0');
-  function galScroll() {
-    if (view !== 'about') return;
-    const g = $('#hgal'), st = about.scrollTop, vh = innerHeight, p = Math.max(0, Math.min(1, (st - g.offsetTop) / (g.offsetHeight - vh)));
-    $$('.hrow', g).forEach(row => { const tr = row.querySelector('.htrack'), dist = Math.max(0, tr.scrollWidth - innerWidth), dir = +row.dataset.dir;
-      const x = dir > 0 ? -dist + p * dist : -p * dist; tr.style.transform = `translate3d(${x.toFixed(1)}px,0,0)`; });
-  }
-  about.addEventListener('scroll', () => requestAnimationFrame(galScroll), { passive: true });
-  addEventListener('resize', galScroll);
+  /* ---------- about: books, food and Chelsea to throw around (three.js, loaded when near) ---------- */
+  (function toss() {
+    const el = $('#toss'); if (!el) return;
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let booted = false;
+    new IntersectionObserver((es, o) => { if (es[0].isIntersecting && !booted) { booted = true; o.disconnect(); import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js').then(run).catch(() => {}); } }, { rootMargin: '600px 0px' }).observe(el);
+    function run(THREE) {
+      const C = { w: 0xf3f3f5, a: 0xdedee2, b: 0xc3c3c8, c: 0x8e8e94, d: 0x2c2c30, e: 0x18181b };
+      const M = {}; const mat = (c, r = .8) => M[c + '' + r] || (M[c + '' + r] = new THREE.MeshStandardMaterial({ color: c, roughness: r, metalness: 0 }));
+      const shade = o => { o.traverse(m => { if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; } }); return o; };
+      function books(n, s) {
+        const g = new THREE.Group(); let y = 0; const cols = [C.d, C.b, C.c, C.a, C.d];
+        for (let i = 0; i < n; i++) {
+          const w = (1.5 - (i % 3) * .1) * s, h = (.2 + (i % 2) * .06) * s, d = (1.05 - (i % 2) * .08) * s, b = new THREE.Group();
+          const pages = new THREE.Mesh(new THREE.BoxGeometry(w * .95, h * .78, d * .96), mat(C.w, .9)); pages.position.set(.03 * s, 0, .03 * s);
+          b.add(new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat(cols[i % 5], .7)), pages); b.position.y = y + h / 2; b.rotation.y = (i % 2 ? .14 : -.1) * (i + 1) * .7; g.add(b); y += h;
+        }
+        return shade(g);
+      }
+      function pot(s) {
+        const g = new THREE.Group();
+        const body = new THREE.Mesh(new THREE.LatheGeometry([[0, 0], [.82, 0], [.92, .06], [.95, .2], [.95, .78], [1, .82]].map(([x, y]) => new THREE.Vector2(x * s, y * s)), 48), mat(C.d, .45)); body.material.side = THREE.DoubleSide; g.add(body);
+        [-1, 1].forEach(k => { const h = new THREE.Mesh(new THREE.TorusGeometry(.16 * s, .045 * s, 10, 24, Math.PI), mat(C.d, .45)); h.position.set(k * s, .62 * s, 0); h.rotation.set(0, k > 0 ? -Math.PI / 2 : Math.PI / 2, Math.PI); h.rotation.order = 'YXZ'; g.add(h); });
+        const lid = new THREE.Group(); lid.add(new THREE.Mesh(new THREE.LatheGeometry([[0, .2], [.3, .17], [.75, .07], [.96, 0], [.96, -.02]].reverse().map(([x, y]) => new THREE.Vector2(x * s, y * s)), 48), mat(C.b, .5)));
+        const knob = new THREE.Mesh(new THREE.SphereGeometry(.1 * s, 16, 12), mat(C.d, .4)); knob.position.y = .24 * s; lid.add(knob); lid.position.set(.06 * s, .83 * s, 0); lid.rotation.z = .12; g.add(lid);
+        const st = new THREE.Mesh(new THREE.CylinderGeometry(.035 * s, .045 * s, 1.3 * s, 10), mat(C.a, .9)); st.position.set(-.55 * s - Math.sin(.55) * .65 * s, .6 * s + Math.cos(.55) * .65 * s, .1 * s); st.rotation.z = .55; g.add(st);
+        const steam = []; for (let i = 0; i < 6; i++) { const m = new THREE.Mesh(new THREE.SphereGeometry(.14 * s, 14, 10), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1, transparent: true, opacity: 0 })); m.userData.p = i / 6; g.add(m); steam.push(m); }
+        g.userData.tick = t => steam.forEach(m => { const p = (m.userData.p + t * .25) % 1; m.position.set(.35 * s + Math.sin(p * 6 + m.userData.p * 9) * .12 * s, (1.05 + p * 1.1) * s, 0); m.scale.setScalar(.6 + p * 1.2); m.material.opacity = Math.sin(p * Math.PI) * .32; });
+        shade(g); steam.forEach(m => m.castShadow = false); return g;
+      }
+      const ico = new THREE.IcosahedronGeometry(1, 0).attributes.position, dirs = [];
+      for (let i = 0; i < ico.count; i++) { const v = new THREE.Vector3().fromBufferAttribute(ico, i).normalize(); if (!dirs.some(o => o.distanceTo(v) < .01)) dirs.push(v); }
+      function ball(r) {
+        const g = new THREE.Group(); g.add(new THREE.Mesh(new THREE.SphereGeometry(r, 48, 32), mat(C.w, .55)));
+        dirs.forEach(v => { const p = new THREE.Mesh(new THREE.CircleGeometry(r * .3, 5), mat(C.e, .55)); p.position.copy(v.clone().multiplyScalar(r * 1.01)); p.lookAt(v.clone().multiplyScalar(r * 2)); g.add(p); });
+        return shade(g);
+      }
+      const rd = new THREE.WebGLRenderer({ antialias: true, alpha: true }); rd.setPixelRatio(Math.min(2, devicePixelRatio)); rd.shadowMap.enabled = true; rd.shadowMap.type = THREE.PCFSoftShadowMap; rd.outputColorSpace = THREE.SRGBColorSpace; el.appendChild(rd.domElement);
+      const s = new THREE.Scene(); s.add(new THREE.HemisphereLight(0xffffff, 0xb8b8bd, 1.35));
+      const sun = new THREE.DirectionalLight(0xffffff, 1.9); sun.position.set(-3, 6, 10); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.radius = 6; sun.shadow.bias = -.0005; s.add(sun);
+      const back = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.ShadowMaterial({ opacity: .1 })); back.position.z = -2.2; back.receiveShadow = true; s.add(back);
+      const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, .1, 100); let W = 10, H = 7, live = false, drawn = false;
+      const fit = () => { const w = el.clientWidth, h = el.clientHeight, U = w < 640 ? 66 : 90; rd.setSize(w, h, false); W = w / U; H = h / U; Object.assign(cam, { left: -W / 2, right: W / 2, top: H / 2, bottom: -H / 2 }); cam.position.set(0, 0, 20); cam.lookAt(0, 0, 0); cam.updateProjectionMatrix(); Object.assign(sun.shadow.camera, { left: -W, right: W, top: H, bottom: -H, near: .5, far: 40 }); sun.shadow.camera.updateProjectionMatrix(); };
+      new ResizeObserver(fit).observe(el); fit();
+      new IntersectionObserver(es => live = es[0].isIntersecting).observe(el);
+      // spin: how freely each kind turns. Pots and books barely spin.
+      const kinds = [[() => books(3, .55), .3], [() => ball(.42), 1], [() => pot(.42), .12], [() => books(2, .6), .3], [() => ball(.36), 1], [() => books(4, .48), .3], [() => pot(.36), .12], [() => ball(.48), 1]];
+      const bodies = []; let started = false;
+      const spawn = i => { const [make, sp] = kinds[i % kinds.length], o = make(), g = new THREE.Group(), bx = new THREE.Box3().setFromObject(o); o.position.sub(bx.getCenter(new THREE.Vector3())); g.add(o); g.rotation.x = .5; s.add(g);
+        const r = bx.getSize(new THREE.Vector3()).length() * .36; bodies.push({ g, o, r, sp, x: (Math.random() - .5) * (W - 2), y: H / 2 + 1 + r, vx: (Math.random() - .5) * 2, vy: 0, a: sp < 1 ? (Math.random() - .5) * .5 : Math.random() * 6, av: (Math.random() - .5) * 3 * sp }); };
+      new IntersectionObserver((es, o) => { if (es[0].isIntersecting && !started) { started = true; o.disconnect(); const n = el.clientWidth < 640 ? 10 : 16; for (let i = 0; i < n; i++) setTimeout(() => spawn(i), still ? 0 : i * 140); } }, { threshold: .3 }).observe(el);
+      let grab = null, gx = 0, gy = 0;
+      const world = e => { const b = el.getBoundingClientRect(); return [((e.clientX - b.left) / b.width - .5) * W, -((e.clientY - b.top) / b.height - .5) * H]; };
+      const pick = e => { const [x, y] = world(e); let best = null, bd = 1e9; bodies.forEach(b => { const d = Math.hypot(b.x - x, b.y - y); if (d < b.r * 1.15 && d < bd) { bd = d; best = b; } }); return [best, x, y]; };
+      el.addEventListener('touchstart', e => { if (pick(e.touches[0])[0]) e.preventDefault(); }, { passive: false });
+      el.addEventListener('pointerdown', e => { const [b, x, y] = pick(e); if (b) { grab = b; gx = x; gy = y; el.setPointerCapture(e.pointerId); el.classList.add('grab'); } });
+      el.addEventListener('pointermove', e => { if (grab) [gx, gy] = world(e); });
+      const rel = () => { grab = null; el.classList.remove('grab'); }; el.addEventListener('pointerup', rel); el.addEventListener('pointercancel', rel);
+      let last = performance.now();
+      (function go(now) {
+        const dt = Math.min(.033, (now - last) / 1000); last = now;
+        if (live || !drawn) {
+          const sub = 3, h = dt / sub;
+          for (let k = 0; k < sub; k++) {
+            bodies.forEach(b => { if (b === grab) { b.vx = (gx - b.x) * 18; b.vy = (gy - b.y) * 18; } else b.vy -= 22 * h; b.x += b.vx * h; b.y += b.vy * h; b.a += b.av * h; b.av *= 1 - (b.sp < 1 ? 6 : 1.2) * h;
+              const fl = -H / 2 + b.r; if (b.y < fl) { b.y = fl; if (b.vy < 0) b.vy *= -.32; b.vx *= .985; b.av += (-b.vx / b.r * .8 * b.sp - b.av) * .3; }
+              if (b.x < -W / 2 + b.r) { b.x = -W / 2 + b.r; b.vx = Math.abs(b.vx) * .4; } if (b.x > W / 2 - b.r) { b.x = W / 2 - b.r; b.vx = -Math.abs(b.vx) * .4; } if (b.y > H / 2 + 4) { b.y = H / 2 + 4; b.vy = 0; } });
+            for (let i = 0; i < bodies.length; i++) for (let j = i + 1; j < bodies.length; j++) { const A = bodies[i], B = bodies[j], dx = B.x - A.x, dy = B.y - A.y, d = Math.hypot(dx, dy) || 1e-4, m = A.r + B.r; if (d < m) { const nx = dx / d, ny = dy / d, ov = (m - d) / 2, ia = A === grab ? 0 : 1, ib = B === grab ? 0 : 1, tot = (ia + ib) || 1; A.x -= nx * ov * 2 * ia / tot; A.y -= ny * ov * 2 * ia / tot; B.x += nx * ov * 2 * ib / tot; B.y += ny * ov * 2 * ib / tot; const rv = (B.vx - A.vx) * nx + (B.vy - A.vy) * ny; if (rv < 0) { const imp = -1.3 * rv / 2; if (ia) { A.vx -= imp * nx; A.vy -= imp * ny; } if (ib) { B.vx += imp * nx; B.vy += imp * ny; } A.av += rv * .4 * A.sp; B.av -= rv * .4 * B.sp; } } }
+          }
+          bodies.forEach(b => { if (b.sp < 1) { b.a = Math.max(-.9, Math.min(.9, b.a)); } b.g.position.set(b.x, b.y, 0); b.g.rotation.z = b.a; b.o.userData.tick && b.o.userData.tick(now / 1000); });
+          rd.render(s, cam); drawn = true;
+        }
+        requestAnimationFrame(go);
+      })(last);
+    }
+  })();
 
 
   /* ---------- contact ---------- */
@@ -1600,7 +1661,7 @@ body.menu-open .logo{opacity:1}
     big.classList.toggle('gone', v !== 'home'); body.classList.toggle('intro', false); body.classList.remove('hovering');
     $$('.links button').forEach(b => b.setAttribute('aria-current', b.dataset.go === v || (v === 'project' && b.dataset.go === 'work') ? 'page' : 'false'));
     if (v === 'home') { requestAnimationFrame(() => { measure(); homeScroll(); }); setHash(''); }
-    else if (v === 'about') { about.scrollTop = 0; requestAnimationFrame(() => { galScroll(); revealRh(about); }); setHash('about'); }
+    else if (v === 'about') { about.scrollTop = 0; requestAnimationFrame(() => { revealRh(about); }); setHash('about'); }
     else if (v === 'work') { if (prev !== 'project') work.scrollTop = 0; if ('cat' in opts) wfilter(opts.cat); requestAnimationFrame(() => { workScroll(); if (prev !== 'project') revealRh(work); }); setHash('work'); }
     else if (v === 'project') { const p = P[opts.i]; last = opts.i; if (prev !== 'project') backTo = prev === 'home' ? 'home' : 'work'; buildCase(p); setHash(p.id); }
     else { const pg = v === 'contact' ? contact : writing; pg.scrollTop = 0; requestAnimationFrame(() => revealRh(pg)); setHash(v); }
