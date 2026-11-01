@@ -1094,7 +1094,7 @@ body.menu-open .logo{opacity:1}
           f.r = m * .02 + far * 1.08 * Math.min(1, Math.pow(p * f.v, 1.5));
           if (f.r < far) all = false;
           const px = cx + Math.cos(f.a) * f.r, py = cy + Math.sin(f.a) * f.r;
-          if (f.r < far * 1.02) { P(px, py, Math.cos(f.a) * 420, Math.sin(f.a) * 420, .22, .55); }
+          if (f.r < far * 1.02) { P(px, py, Math.cos(f.a) * 180, Math.sin(f.a) * 180, .1, .35); }
         });
         ox.clearRect(0, 0, W, H); ox.fillStyle = BG; ox.fillRect(0, 0, W, H);
         ox.globalCompositeOperation = 'destination-out'; ox.beginPath();
