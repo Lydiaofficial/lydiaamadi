@@ -1077,24 +1077,24 @@ body.menu-open .logo{opacity:1}
         T.forEach((s, i) => {
           const o = OFF[i], tx = cx + o.x * m, ty = cy + o.y * m, u = (t - s) / FALL;
           if (u < 0 || o.hit) return;
-          if (u < 1) { const e = u * u; drop(tx, -40 + (ty + 40) * e, Math.max(6, m * .012), 1 + e * .35); return; }
+          if (u < 1) { const e = u * u; drop(tx, -40 + (ty + 40) * e, Math.max(3.5, m * .0055), 1 + e * .35); return; }
           o.hit = true; hits++;
-          for (let k = 0; k < 12; k++) { const a = k / 12 * Math.PI * 2; P(tx + Math.cos(a) * 4, ty + Math.sin(a) * 4, Math.cos(a) * 1100, Math.sin(a) * 1100, .55, 1); }
-          P(tx, ty, 0, 0, .9, 2.4);
+          for (let k = 0; k < 12; k++) { const a = k / 12 * Math.PI * 2; P(tx + Math.cos(a) * 4, ty + Math.sin(a) * 4, Math.cos(a) * 160, Math.sin(a) * 160, .22, .32); }
+          P(tx, ty, 0, 0, .35, .45);
         });
         if (hits) { // keep the pool alive and slowly turning
-          const r = m * .018 * Math.sqrt(hits), a = t * .004;
-          for (let k = 0; k < 3; k++) { const b = a + k * 2.1; P(cx + Math.cos(b) * r, cy + Math.sin(b) * r * .8, -Math.sin(b) * 140, Math.cos(b) * 140, .16 + hits * .03, 1.4 + hits * .5); }
+          const r = m * .006 * Math.sqrt(hits), a = t * .004;
+          for (let k = 0; k < 3; k++) { const b = a + k * 2.1; P(cx + Math.cos(b) * r, cy + Math.sin(b) * r * .8, -Math.sin(b) * 30, Math.cos(b) * 30, .05 + hits * .012, .3 + hits * .07); }
         }
         if (ready && hits === T.length && t > T[T.length - 1] + FALL + 380) { tf = now; window.__ldFlow(); }
       } else {
         const p = (now - tf) / 1000, far = Math.hypot(W, H);
         let all = true;
         fingers.forEach(f => {
-          f.r = m * .05 + far * 1.08 * Math.min(1, Math.pow(p * f.v, 1.5));
+          f.r = m * .02 + far * 1.08 * Math.min(1, Math.pow(p * f.v, 1.5));
           if (f.r < far) all = false;
           const px = cx + Math.cos(f.a) * f.r, py = cy + Math.sin(f.a) * f.r;
-          if (f.r < far * 1.02) { P(px, py, Math.cos(f.a) * 1700, Math.sin(f.a) * 1700, .62, 2.2); P(cx + Math.cos(f.a) * f.r * .8, cy + Math.sin(f.a) * f.r * .8, Math.cos(f.a) * 500, Math.sin(f.a) * 500, .3, 2.8); }
+          if (f.r < far * 1.02) { P(px, py, Math.cos(f.a) * 420, Math.sin(f.a) * 420, .22, .55); }
         });
         ox.clearRect(0, 0, W, H); ox.fillStyle = BG; ox.fillRect(0, 0, W, H);
         ox.globalCompositeOperation = 'destination-out'; ox.beginPath();
