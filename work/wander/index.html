@@ -771,11 +771,14 @@ body.menu-open .logo{opacity:1}
 .toss .behind div{font-weight:400;letter-spacing:-.035em}
 .hlab b{font-weight:400;letter-spacing:-.02em;font-size:clamp(1.6rem,2.8vw,2.6rem)}
 .hlab{width:100vw}
-.hlab .credit{margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.02em;text-transform:none;color:var(--mut);max-width:46ch;text-align:right;line-height:1.4}
-.hlab .credit a{color:inherit}
+.hcred{width:100vw;padding:0 var(--gr) 0 var(--gl);display:flex}
+.hcred .credit{margin-left:auto}
+@media (max-width:640px){.hcred .credit{margin-left:0}}
+.credit{margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.02em;text-transform:none;color:var(--mut);max-width:46ch;text-align:right;line-height:1.4}
+.credit a{color:inherit}
 .ph:has(img)::after{content:"";position:absolute;inset:auto 0 0;height:45%;background:linear-gradient(transparent,rgba(0,0,0,.55));pointer-events:none}
 .ph:has(img) .cap{z-index:1;color:#fff;opacity:.95;font-family:var(--mono);font-size:11px;line-height:1.35}
-@media (max-width:640px){.hlab{flex-wrap:wrap}.hlab .credit{margin-left:0;text-align:left;flex-basis:100%}}
+@media (max-width:640px){.credit{text-align:left}}
 /* more tags around the name */
 .btag{position:absolute;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.02em;line-height:1;white-space:nowrap;padding:5px 9px;transition:background .5s,color .5s}
 .btag.dk{background:var(--fg);color:var(--bg)}
@@ -887,8 +890,8 @@ body.menu-open .logo{opacity:1}
   </section>
   <section class="hgal" id="hgal">
     <div class="hgal-pin">
-      <div class="hrow" data-dir="1"><div class="hlab"><b>Food</b><span id="foodN">08</span></div><div class="htrack" id="foodTrack"></div></div>
-      <div class="hrow" data-dir="-1"><div class="hlab"><b>Chelsea Women</b><span id="cfcN">08</span><small class="credit">Photos: <a href="https://commons.wikimedia.org/wiki/User:Katie_Chan" target="_blank" rel="noopener">Katie Chan</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>, and LHC88, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/Category:Matches_of_Chelsea_F.C._Women" target="_blank" rel="noopener">Wikimedia Commons</a>. Cropped.</small></div><div class="htrack" id="cfcTrack"></div></div>
+      <div class="hrow" data-dir="1"><span id="foodN" hidden></span><div class="htrack" id="foodTrack"></div></div>
+      <div class="hrow" data-dir="-1"><span id="cfcN" hidden></span><div class="htrack" id="cfcTrack"></div><div class="hcred"><small class="credit">Photos: <a href="https://commons.wikimedia.org/wiki/User:Katie_Chan" target="_blank" rel="noopener">Katie Chan</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>, and LHC88, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/Category:Matches_of_Chelsea_F.C._Women" target="_blank" rel="noopener">Wikimedia Commons</a>. Cropped.</small></div></div>
     </div>
   </section>
   <section class="toss" id="toss" aria-label="Books, food and Chelsea to throw around"></section>
