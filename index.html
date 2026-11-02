@@ -326,7 +326,7 @@ body.hovering .peek{opacity:1;transform:scale(1)}
 .ct-form label span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
 .ct-form input,.ct-form textarea{font:inherit;font-size:clamp(1.05rem,1.6vw,1.3rem);color:var(--fg);background:transparent;border:0;border-bottom:1px solid var(--fg);padding:8px 0;border-radius:0;outline:none;resize:vertical}
 .ct-form input:focus,.ct-form textarea:focus{border-bottom-width:2px}
-.fsend{all:unset;cursor:pointer;justify-self:start;font-weight:800;text-transform:uppercase;letter-spacing:-.02em;font-size:clamp(1.4rem,2.6vw,2.2rem);display:flex;gap:.3em;align-items:center}
+.fsend{all:unset;cursor:pointer;justify-self:start;font-weight:400;text-transform:uppercase;letter-spacing:-.02em;font-size:clamp(1.4rem,2.6vw,2.2rem);display:flex;gap:.3em;align-items:center}
 .fsend span{transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
 .fsend:hover span{transform:translateX(.3em)}
 .fsend:focus-visible{outline:1.5px solid var(--fg);outline-offset:6px}
@@ -368,9 +368,9 @@ button.np{font:inherit;font-size:12px;cursor:pointer;max-width:calc(100vw - var(
 .menu{position:fixed;inset:0;z-index:29;background:var(--bg);display:grid;align-content:space-between;padding:calc(90px + env(safe-area-inset-top,0px)) var(--gr) calc(24px + env(safe-area-inset-bottom,0px)) var(--gl);clip-path:circle(0 at calc(100% - 34px) 34px);transition:clip-path .7s cubic-bezier(.7,0,.2,1);visibility:hidden}
 .menu.open{clip-path:circle(150% at calc(100% - 34px) 34px);visibility:visible}
 .menu nav{display:grid;gap:4px}
-.menu nav button{all:unset;cursor:pointer;display:flex;align-items:baseline;gap:12px;font-weight:800;text-transform:uppercase;letter-spacing:-.045em;font-size:clamp(3rem,15vw,6rem);line-height:.95}
+.menu nav button{all:unset;cursor:pointer;display:flex;align-items:baseline;gap:12px;font-weight:400;text-transform:uppercase;letter-spacing:-.035em;font-size:clamp(3rem,15vw,6rem);line-height:.95}
 .menu nav button small{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.06em;color:var(--mut)}
-.menu nav button i{font-family:var(--serif);font-weight:400;text-transform:none;letter-spacing:-.01em}
+.menu nav button i{font-family:var(--sans);font-style:normal;font-weight:400;text-transform:uppercase;letter-spacing:-.035em;margin-right:-.12em}
 .menu nav button[aria-current="page"]{text-decoration:underline;text-decoration-thickness:.06em;text-underline-offset:.1em}
 .menu.open nav button{animation:blurin .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(.15s + var(--i) * 70ms)}
 .menu-foot{display:grid;gap:10px;font-family:var(--mono);font-size:12px}
