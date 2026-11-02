@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /options/
+
+Sitemap: https://lydiaamadi.vercel.app/sitemap.xml

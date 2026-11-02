@@ -3,22 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Lydia Amadi, product designer</title>
-<meta name="description" content="I design apps, dashboards and open-source tools. Product designer who builds too.">
+<title>Lydia Amadi, product designer and builder</title>
+<meta name="description" content="Lydia Amadi is a product designer and builder. She designs apps and websites, then builds and ships most of them herself.">
+<meta name="author" content="Lydia Amadi">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#fafafa">
 <link rel="canonical" href="https://lydiaamadi.vercel.app/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Lydia Amadi">
-<meta property="og:title" content="Lydia Amadi, product designer">
-<meta property="og:description" content="I design apps, dashboards and open-source tools. Product designer who builds too.">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Lydia Amadi, product designer and builder">
+<meta property="og:description" content="Lydia Amadi is a product designer and builder. She designs apps and websites, then builds and ships most of them herself.">
 <meta property="og:url" content="https://lydiaamadi.vercel.app/">
 <meta property="og:image" content="https://lydiaamadi.vercel.app/og/site.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LYDIA logo with the tags Builder and Product designer">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Lydia Amadi, product designer">
-<meta name="twitter:description" content="I design apps, dashboards and open-source tools. Product designer who builds too.">
+<meta name="twitter:title" content="Lydia Amadi, product designer and builder">
+<meta name="twitter:description" content="Lydia Amadi is a product designer and builder. She designs apps and websites, then builds and ships most of them herself.">
 <meta name="twitter:image" content="https://lydiaamadi.vercel.app/og/site.jpg">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Person", "@id": "https://lydiaamadi.vercel.app/#lydia", "name": "Lydia Amadi", "alternateName": "Lydia Amadi Chinyere", "url": "https://lydiaamadi.vercel.app/", "jobTitle": "Product designer", "description": "Lydia Amadi is a product designer and builder. She designs apps and websites, then builds and ships most of them herself.", "image": "https://lydiaamadi.vercel.app/og/site.jpg", "knowsAbout": ["Product design", "UX design", "Interaction design", "Design systems", "User research", "Prototyping", "Front-end development"], "sameAs": ["https://lydiaamadi.substack.com"]}, {"@type": "WebSite", "@id": "https://lydiaamadi.vercel.app/#site", "url": "https://lydiaamadi.vercel.app/", "name": "Lydia Amadi", "description": "Lydia Amadi is a product designer and builder. She designs apps and websites, then builds and ships most of them herself.", "author": {"@id": "https://lydiaamadi.vercel.app/#lydia"}}]}</script>
 <script>window.__PATHS = /^https?:$/.test(location.protocol) && !/claude/.test(location.host);</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -713,7 +718,8 @@ body.menu-open .logo{opacity:1}
 #case .c-dki{position:relative;grid-template-rows:auto 1fr!important}
 
 /* landing headers in the same light type as the page heroes */
-#homeSay{font-weight:400;letter-spacing:-.035em;line-height:.9;font-size:clamp(2.8rem,8.8vw,9.4rem);max-width:none;display:flex;flex-wrap:wrap;justify-content:space-between;gap:.04em 4vw}
+#homeSay{font-weight:400;letter-spacing:-.035em;line-height:.92;font-size:max(2.1rem,4.15vw);max-width:none;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:.04em .26em}
+#homeSay .sbr{flex-basis:100%;height:0}
 #homeSay .it{font-family:var(--sans);font-style:normal;font-weight:400;text-transform:uppercase;letter-spacing:-.035em;font-size:1em}
 .sec-title{font-weight:400}
 .sec-title i{font-family:var(--sans);font-style:normal;text-transform:uppercase;letter-spacing:-.035em}
@@ -811,7 +817,7 @@ body.menu-open .logo{opacity:1}
 <!-- ============ HOME ============ -->
 <main class="page" id="home">
   <div class="intro-sp"></div>
-  <section class="stmt skew"><h1 class="say" id="homeSay"></h1></section>
+  <section class="stmt skew"><h1 class="say" id="homeSay">An unreasonable number of ideas. A reasonable number of prototypes.</h1></section>
   <div class="mq" aria-hidden="true"><div id="mq"></div></div>
   <h2 class="sec-title skew" aria-label="Selected work"><span id="selA"><i>Selected</i></span> <span id="selB">work</span> <small class="arrow">↘</small></h2>
   <section class="works" id="works"><div class="wcol l" id="wcolL"></div><div class="wcol r" id="wcolR"></div></section>
@@ -1184,12 +1190,13 @@ body.menu-open .logo{opacity:1}
   const metaLine = p => [p.kind, p.y].filter(Boolean).join(' · ');
   const redraw = el => { el.classList.remove('drawn'); void el.offsetWidth; el.classList.add('drawn'); };
   const byId = id => P.findIndex(p => p.id === id);
-  const HOME_SAY = '[I design] {apps}, {dashboards} [and] {tools}.';
+  const HOME_SAY = 'An unreasonable number of ideas. | A reasonable number of prototypes.';
     
   /* ---------- sentence engine ---------- */
   function build(el, str, cls) {
     el.innerHTML = ''; let i = 0;
     str.replace(/\[(.+?)\]/g, (m, g) => g.split(' ').map(w => '§' + w).join(' ')).split(' ').forEach(tok => {
+      if (tok === '|') { const br = document.createElement('i'); br.className = 'sbr'; br.setAttribute('aria-hidden', 'true'); el.append(br); return; }
       const m = tok.match(/^\{(\w+)\}(.*)$/), s = document.createElement('span');
       if (m) { s.className = 'w p'; s.tabIndex = 0; s.setAttribute('role', 'link'); s.dataset.cat = m[1]; s.setAttribute('aria-label', `${CATS[m[1]]}: see the work`); s.textContent = CATS[m[1]].toUpperCase() + (m[2] || ''); }
       else { const it = tok.startsWith('§'); s.className = 'w' + (it ? ' it' : ''); s.textContent = it ? tok.slice(1) : tok; if (/LYDIA/i.test(s.textContent)) { s.classList.add('hm'); s.dataset.go = 'home'; s.setAttribute('role', 'link'); s.tabIndex = 0; } }
