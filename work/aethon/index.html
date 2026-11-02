@@ -923,6 +923,7 @@ body.menu-open .logo{opacity:1}
       <label for="fName"><span>Your name</span><input id="fName" autocomplete="name"></label>
       <label for="fEmail"><span>Your email</span><input id="fEmail" type="email" autocomplete="email"></label>
       <label for="fMsg"><span>Message</span><textarea id="fMsg" rows="4"></textarea></label>
+      <input type="checkbox" name="botcheck" id="fBot" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <p class="fout" id="fOut" role="status"></p>
       <button class="fsend" type="submit" data-mag>Send it <span>→</span></button>
     </form>
@@ -931,7 +932,6 @@ body.menu-open .logo{opacity:1}
     <h2 class="ab-h">Elsewhere</h2>
     <div class="rows ct-rows">
       <div class="rowi"><span class="y">Email</span><span class="t" id="emTxt"></span><span class="d"><button class="cbtn" id="copyEm">Copy</button></span></div>
-      <div class="rowi"><span class="y">Based in</span><span class="t">The UK</span><span class="d" id="ukTime"></span></div>
       <div class="rowi"><span class="y">Open to</span><span class="t">Design roles</span><span class="d">Remote or relocation</span></div>
       <div class="rowi"><span class="y">LinkedIn</span><span class="t">LinkedIn</span><span class="d"><button class="cbtn" data-soon>Open</button></span></div>
       <div class="rowi"><span class="y">Résumé</span><span class="t">One page</span><span class="d"><a class="cbtn" href="resume.pdf" target="_blank" rel="noopener">Open ↗</a></span></div>
@@ -1509,8 +1509,6 @@ body.menu-open .logo{opacity:1}
   const EMAIL = ['lydiaamadichinyere', 'gmail.com'].join('@');
   $('#emTxt').textContent = EMAIL;
   $('#copyEm').addEventListener('click', async () => { try { await navigator.clipboard.writeText(EMAIL); toast('Email copied.'); } catch (_) { const r = document.createRange(); r.selectNodeContents($('#emTxt')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); toast('Selected. Copy it from there.'); } });
-  const ukT = () => { try { $('#ukTime').textContent = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit' }).format(new Date()) + ' there now'; } catch (_) {} };
-  ukT(); setInterval(ukT, 30000);
   $$('.fchip').forEach(b => b.addEventListener('click', () => $$('.fchip').forEach(x => x.setAttribute('aria-pressed', x === b))));
   $('#ctForm').addEventListener('submit', async e => {
     e.preventDefault();
@@ -1521,7 +1519,7 @@ body.menu-open .logo{opacity:1}
     if (!msg) { out.textContent = 'Add a message.'; $('#fMsg').focus(); return; }
     out.textContent = 'Sending...';
     try {
-      const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ access_key: '9fe2ca84-4228-4a2a-943d-1cc1aaf071f4', subject: `Portfolio: ${topic}`, from_name: name, name, email, message: msg }) });
+      const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ access_key: '9fe2ca84-4228-4a2a-943d-1cc1aaf071f4', subject: `Portfolio: ${topic}`, from_name: name, name, email, replyto: email, message: msg, botcheck: $('#fBot').checked }) });
       const j = await r.json();
       if (j && j.success) { out.textContent = 'Sent. Talk soon.'; e.target.reset(); Fluid.splash(innerWidth / 2, innerHeight / 2); }
       else throw new Error('fail');
