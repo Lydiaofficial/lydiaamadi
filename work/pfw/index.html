@@ -1239,7 +1239,7 @@ body.menu-open .logo{opacity:1}
     fairly:     { col: 'L', dev: 'phone', w: '78%',  o: 14, d: 'Shared bills', tag: 'Product design / Build', ang: '20deg', bg: null, screen: null, shot: 4, inset: true },
     orbithop:   { col: 'R', dev: 'phone', w: '78%',  o: 13, d: 'Arcade game', tag: 'Game design / Build', ang: '-28deg', bg: null, screen: null, shot: 1 },
     pyrios:     { col: 'L', dev: 'desk',  w: '100%', o: 12, d: 'Supercar house site', tag: 'Web design / Motion / Build', ang: '12deg', bg: null, screen: null },
-    warble:     { col: 'L', dev: 'phone', w: '78%',  o: 16, d: 'Spelling game', tag: 'Game design / Build', ang: '16deg', bg: null, screen: null, shot: 0, inset: true },
+    warble:     { col: 'L', dev: 'phone', w: '78%',  o: 16, d: 'Spelling game', tag: 'Game design / Build', ang: '16deg', bg: null, screen: null, shot: 0 },
     radiograph: { col: 'R', dev: 'desk',  w: '100%', o: 15, d: 'Radio archive', tag: 'Product design / Build', ang: '-14deg', bg: null, screen: null, shot: 3 },
     aethon:     { col: 'L', dev: 'desk',  w: '100%', o: 11, d: 'Aerospace site', tag: 'Web design / Motion / Build', ang: '-18deg', bg: null, screen: null }
   };
@@ -1737,7 +1737,7 @@ body.menu-open .logo{opacity:1}
     p => `<div class="c-top"><i></i><span></span></div><div class="c-tbl">${Array.from({ length: 8 }, () => '<div><i></i><i></i><i></i><i></i></div>').join('')}</div>`,
     p => `<div class="c-top"><i></i><span></span></div><div class="c-kp"><div></div><div></div><div></div></div><div class="c-chart"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><path d="M0 32 C10 30 14 18 24 20 S38 30 48 22 62 8 72 12 86 20 100 6"/></svg></div>`
   ];
-  const INSET = { warble: true, rondo: true, obol: true, fairly: true };
+  const INSET = { rondo: true, obol: true, fairly: true };
   const scr = (p, k, t) => SHOTS[p.id] ? `<div class="c-sc c-shot${INSET[p.id] ? ' inset' : ''}"><img src="${SHOTS[p.id][k % SHOTS[p.id].length]}" alt="" loading="lazy"></div>` : `<div class="c-sc ${t}">${p.id === 'vela' ? VELA[k % 4]() : GPH[k % 4](p)}</div>`;
   const phone = (p, k, t, pw, par) => `<div class="c-ph c-par" style="--pw:${pw}cqw" data-par="${par}"><div class="c-phi">${scr(p, k, t)}</div></div>`;
   const VIS = .579;
