@@ -166,7 +166,7 @@ body.hovering .say .w:not(.on){color:var(--dim)}
 .ticks i{display:block;height:1.5px;width:14px;background:var(--fg);margin-left:auto;opacity:.5;transition:width .3s,opacity .3s}
 .ticks i.on{width:30px;opacity:1}
 .allwork{position:relative;z-index:2;padding:6vh var(--gr) 10vh var(--gl);display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
-.allwork button{all:unset;cursor:pointer;font-weight:800;text-transform:uppercase;letter-spacing:-.03em;font-size:clamp(1.6rem,4vw,3.4rem);display:flex;gap:.3em;align-items:center}
+.allwork button{all:unset;cursor:pointer;font-weight:400;text-transform:uppercase;letter-spacing:-.035em;font-size:clamp(1.6rem,4vw,3.4rem);display:flex;gap:.3em;align-items:center}
 .allwork button span{display:inline-block;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
 .allwork button:hover span{transform:translateX(.3em)}
 .allwork small{font-family:var(--mono);font-size:11px;color:var(--mut)}
@@ -230,7 +230,7 @@ body.hovering .say .w:not(.on){color:var(--dim)}
 .rowi .y{font-family:var(--mono);font-size:12px}
 .rowi .t{font-weight:800;text-transform:uppercase;letter-spacing:-.03em;font-size:clamp(1.2rem,2.4vw,2rem);line-height:1}
 .rowi .d{color:inherit;opacity:.65}
-.toss{position:relative;z-index:2;height:min(80vh,720px);margin:2vh 0;cursor:grab;touch-action:pan-y}
+.toss{position:relative;z-index:2;height:min(46vh,420px);margin:0 0 4vh;cursor:grab;touch-action:pan-y}
 .toss.grab{cursor:grabbing}
 .toss canvas{position:absolute;inset:0;display:block;width:100%;height:100%}
 .toss .behind{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
@@ -885,13 +885,14 @@ body.menu-open .logo{opacity:1}
     <h2 class="ab-h">Off the clock</h2>
     <div class="off"><span>Books</span><i>,</i><span>food</span><i>&amp;</i><span>Chelsea</span></div>
   </section>
-  <section class="toss" id="toss" aria-label="Books, food and Chelsea to throw around"><div class="behind" aria-hidden="true"><div>Off the<br>clock</div></div></section>
   <section class="hgal" id="hgal">
     <div class="hgal-pin">
       <div class="hrow" data-dir="1"><div class="hlab"><b>Food</b><span id="foodN">08</span></div><div class="htrack" id="foodTrack"></div></div>
       <div class="hrow" data-dir="-1"><div class="hlab"><b>Chelsea Women</b><span id="cfcN">08</span><small class="credit">Photos: <a href="https://commons.wikimedia.org/wiki/User:Katie_Chan" target="_blank" rel="noopener">Katie Chan</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>, and LHC88, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/Category:Matches_of_Chelsea_F.C._Women" target="_blank" rel="noopener">Wikimedia Commons</a>. Cropped.</small></div><div class="htrack" id="cfcTrack"></div></div>
     </div>
   </section>
+  <section class="toss" id="toss" aria-label="Books, food and Chelsea to throw around"></section>
+
   <section class="ab-sec rp" id="rp" aria-label="On repeat">
     <h2 class="ab-h">Listening</h2>
     <div class="rp-grid">
