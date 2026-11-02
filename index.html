@@ -714,6 +714,44 @@ body.menu-open .logo{opacity:1}
 .sec-title i{font-family:var(--sans);font-style:normal;text-transform:uppercase;letter-spacing:-.035em}
 .cta h2{font-weight:400}
 .cta h2 i{font-family:var(--sans);font-style:normal;text-transform:uppercase;letter-spacing:-.04em}
+/* closing line: one line inside the logo's frame */
+.cta h2.one{display:block;white-space:nowrap;font-size:min(5.3vw,6.6rem);letter-spacing:-.04em;line-height:1}
+.cta h2.one span{background:none!important;margin:0!important;transition:none}
+.cta h2.one .ln{position:relative;display:inline-block;padding:.1em .24em .12em!important;color:var(--fg)!important}
+.cta h2.one .fr{position:absolute;inset:0;padding:0!important;border:1.5px solid var(--fg);clip-path:inset(0 100% 0 0);transition:clip-path 1.2s cubic-bezier(.7,0,.2,1)!important}
+.cta h2.one .fr i{position:absolute;width:9px;height:9px;background:var(--bg);border:1.5px solid var(--fg)}
+.cta h2.one .fr i:nth-child(1){left:-5px;top:-5px}.cta h2.one .fr i:nth-child(2){right:-5px;top:-5px}.cta h2.one .fr i:nth-child(3){left:-5px;bottom:-5px}.cta h2.one .fr i:nth-child(4){right:-5px;bottom:-5px}
+.cta.lit h2.one .fr{clip-path:inset(-8px)}
+@media (max-width:640px){.cta h2.one .fr i{width:7px;height:7px}.cta h2.one .fr i:nth-child(odd){left:-4px}.cta h2.one .fr i:nth-child(even){right:-4px}.cta h2.one .fr i:nth-child(-n+2){top:-4px}.cta h2.one .fr i:nth-child(n+3){bottom:-4px}}
+/* record player */
+.rp-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4vw;align-items:center}
+.rp-deck{position:relative;aspect-ratio:1;max-width:520px;width:100%;justify-self:center}
+.rp-vinyl{position:absolute;inset:4%;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,#141416 0 2px,#1d1d20 2px 3px);box-shadow:0 30px 60px -20px rgba(0,0,0,.45);animation:rpspin 4s linear infinite;animation-play-state:paused}
+.rp-vinyl::after{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 30deg,transparent 0 20%,rgba(255,255,255,.07) 25%,transparent 30% 70%,rgba(255,255,255,.05) 75%,transparent 80%)}
+.rp-lab{position:absolute;inset:33%;border-radius:50%;background:#ececee center/cover;filter:grayscale(1) contrast(1.05);display:grid;place-items:center}
+.rp-lab::after{content:"";width:9%;height:9%;border-radius:50%;background:var(--bg)}
+.rp-deck.playing .rp-vinyl{animation-play-state:running}
+@keyframes rpspin{to{transform:rotate(360deg)}}
+.rp-arm{position:absolute;right:2%;top:2%;width:42%;height:62%;transform-origin:88% 8%;transform:rotate(-24deg);transition:transform .8s cubic-bezier(.3,1.3,.5,1);pointer-events:none}
+.rp-deck.playing .rp-arm{transform:rotate(0deg)}
+.rp-arm::before{content:"";position:absolute;right:6%;top:2%;width:14%;aspect-ratio:1;border-radius:50%;background:#d6d6da;box-shadow:inset 0 0 0 4px #bdbdc2}
+.rp-arm::after{content:"";position:absolute;right:12%;top:9%;width:4px;height:86%;background:#bdbdc2;transform:rotate(18deg);transform-origin:top;border-radius:2px}
+.rp-deck button{all:unset;position:absolute;inset:4%;border-radius:50%;cursor:pointer}
+.rp-k{display:block;margin-bottom:14px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.rp-now h3{margin:0;font-weight:400;text-transform:uppercase;letter-spacing:-.035em;line-height:.92;font-size:clamp(2.2rem,5.6vw,5.4rem);min-height:1.84em;overflow:hidden}
+.rp-now h3 b{display:block;font-weight:400;animation:rprise .7s cubic-bezier(.2,.9,.2,1)}
+@keyframes rprise{from{transform:translateY(100%);filter:blur(8px);opacity:0}}
+.rp-now p{margin:14px 0 0;color:var(--mut);font-size:17px}
+.rp-ctl{display:flex;gap:10px;margin-top:26px}
+.rp-ctl button{all:unset;cursor:pointer;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line)}
+.rp-ctl button.pp{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.rp-ctl svg{width:16px;height:16px;fill:currentColor}
+.rp-list{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:26px;font-size:14px;color:var(--mut)}
+.rp-list button{all:unset;cursor:pointer;border-bottom:1px solid transparent}.rp-list button.on{color:var(--fg);border-color:currentColor}
+.rp-sp{margin-top:28px;border-radius:12px;overflow:hidden;min-height:80px;background:var(--card)}
+.rp-sp iframe{display:block;filter:grayscale(1)}
+@media (max-width:760px){.rp-grid{grid-template-columns:1fr}}
+
 /* Off the clock and Listening match the regular-weight headings used across the site */
 .off{font-weight:400;letter-spacing:-.035em}
 .off i{font-family:var(--sans);font-style:normal;text-transform:uppercase;letter-spacing:-.035em}
@@ -779,7 +817,7 @@ body.menu-open .logo{opacity:1}
   </section>
   <section class="cta" data-lit>
     <div>
-      <h2><span>Let's make</span><span><i>something</i></span><span>good</span></h2>
+      <h2 class="one"><span class="ln">Let's make something good<span class="fr" aria-hidden="true"><i></i><i></i><i></i><i></i></span></span></h2>
       <div class="row"><button data-go="contact" data-mag>Say hello</button><a class="btnlink" href="resume.pdf" target="_blank" rel="noopener" data-mag>Résumé</a><button data-soon data-mag>LinkedIn</button></div>
     </div>
   </section>
@@ -843,12 +881,19 @@ body.menu-open .logo{opacity:1}
       <div class="hrow" data-dir="-1"><div class="hlab"><b>Chelsea Women</b><span id="cfcN">08</span><small class="credit">Photos: <a href="https://commons.wikimedia.org/wiki/User:Katie_Chan" target="_blank" rel="noopener">Katie Chan</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>, and LHC88, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/Category:Matches_of_Chelsea_F.C._Women" target="_blank" rel="noopener">Wikimedia Commons</a>. Cropped.</small></div><div class="htrack" id="cfcTrack"></div></div>
     </div>
   </section>
-  <section class="ab-sec" style="padding-top:2vh">
-    <a class="listen" href="https://open.spotify.com/playlist/2txMQqT5a0Ew4l3ZG0NPfH" target="_blank" rel="noopener"><span class="disc" aria-hidden="true"></span><span>Listening</span><span class="arr" aria-hidden="true">↗</span></a>
+  <section class="ab-sec rp" id="rp" aria-label="On repeat">
+    <h2 class="ab-h">Listening</h2>
+    <div class="rp-grid">
+      <div class="rp-deck"><div class="rp-vinyl"><div class="rp-lab"></div></div><div class="rp-arm" aria-hidden="true"></div><button aria-label="Play or pause the record"></button></div>
+      <div class="rp-now"><span class="rp-k">On repeat</span><h3 id="rpT"><b>Love on the brain</b></h3><p id="rpA">Rihanna</p>
+        <div class="rp-ctl"><button id="rpPrev" aria-label="Previous song"><svg viewBox="0 0 16 16"><path d="M3 2h2v12H3zM14 2v12L6 8z"/></svg></button><button class="pp" id="rpPP" aria-label="Play"></button><button id="rpNext" aria-label="Next song"><svg viewBox="0 0 16 16"><path d="M11 2h2v12h-2zM2 2l8 6-8 6z"/></svg></button></div>
+        <div class="rp-list" id="rpList"></div></div>
+    </div>
+    <div class="rp-sp"><div id="rpSp"></div></div>
   </section>
   <section class="cta" data-lit>
     <div>
-      <h2><span>Let's make</span><span><i>something</i></span><span>good</span></h2>
+      <h2 class="one"><span class="ln">Let's make something good<span class="fr" aria-hidden="true"><i></i><i></i><i></i><i></i></span></span></h2>
       <div class="row"><button data-go="contact" data-mag>Say hello</button><button data-go="work" data-mag>See the work</button></div>
     </div>
   </section>
@@ -1323,6 +1368,40 @@ body.menu-open .logo{opacity:1}
   }
   about.addEventListener('scroll', () => requestAnimationFrame(galScroll), { passive: true });
   addEventListener('resize', galScroll);
+
+  /* ---------- about: record player, playing the Taste playlist through Spotify's player ---------- */
+  (function recordPlayer() {
+    const root = $('#rp'); if (!root) return;
+    const COVER = 'https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da84306e6056b1900a3dd96166fd';
+    const T = [
+      ['spotify:track:5oO3drDxtziYU2H1X23ZIp', 'Love on the brain', 'Rihanna'],
+      ['spotify:track:2262bWmqomIaJXwCRHr13j', 'Sailor Song', 'Gigi Perez'],
+      ['spotify:track:6dOtVTDdiauQNBQEDOtlAB', 'Birds of a feather', 'Billie Eilish'],
+      ['spotify:track:3dYD57lRAUcMHufyqn9GcI', 'Take me to church', 'Hozier'],
+      ['spotify:track:1oAwsWBovWRIp7qLMGPIet', 'Apocalypse', 'Cigarettes After Sex'],
+      ['spotify:track:1Q7EgiMOuwDcB0PJC6AzON', 'Best Part', 'Daniel Caesar, H.E.R.'],
+      ['spotify:track:4VrWlk8IQxevMvERoX08iC', 'Chandelier', 'Sia'],
+      ['spotify:track:2tHwzyyOLoWSFqYNjeVMzj', 'Please Please Please', 'Sabrina Carpenter']
+    ];
+    const deck = $('.rp-deck', root), title = $('#rpT'), by = $('#rpA'), pp = $('#rpPP'), list = $('#rpList');
+    $('.rp-lab', root).style.backgroundImage = `url(${COVER})`;
+    list.innerHTML = T.map((t, i) => `<button data-i="${i}">${t[1]}</button>`).join('');
+    const PLAY = '<svg viewBox="0 0 16 16"><path d="M4 2l10 6-10 6z"/></svg>', PAUSE = '<svg viewBox="0 0 16 16"><path d="M3 2h4v12H3zM9 2h4v12H9z"/></svg>';
+    let ctl = null, i = 0, paused = true, started = false;
+    const paint = () => { deck.classList.toggle('playing', !paused); pp.innerHTML = paused ? PLAY : PAUSE; pp.setAttribute('aria-label', paused ? 'Play' : 'Pause'); $$('button', list).forEach(b => b.classList.toggle('on', +b.dataset.i === i)); };
+    const show = () => { title.innerHTML = `<b>${T[i][1]}</b>`; by.textContent = T[i][2]; };
+    const play = k => { i = (k + T.length) % T.length; started = true; show(); if (ctl) { ctl.loadUri(T[i][0]); ctl.play(); } paused = false; paint(); };
+    const toggle = () => { if (!ctl) return; if (!started) play(i); else ctl.togglePlay(); };
+    $('.rp-deck button', root).addEventListener('click', toggle); pp.addEventListener('click', toggle);
+    $('#rpNext').addEventListener('click', () => play(i + 1)); $('#rpPrev').addEventListener('click', () => play(i - 1));
+    list.addEventListener('click', e => { const b = e.target.closest('button'); if (b) play(+b.dataset.i); });
+    paint();
+    let booted = false;
+    new IntersectionObserver((es, o) => { if (!es[0].isIntersecting || booted) return; booted = true; o.disconnect();
+      window.onSpotifyIframeApiReady = API => API.createController($('#rpSp'), { uri: T[0][0], width: '100%', height: 80 }, c => { ctl = c; c.addListener('playback_update', e => { const p = e.data.isPaused; if (p !== paused) { paused = p; paint(); } }); });
+      const s = document.createElement('script'); s.src = 'https://open.spotify.com/embed/iframe-api/v1'; s.async = true; document.body.appendChild(s);
+    }, { rootMargin: '600px 0px' }).observe(root);
+  })();
 
   /* ---------- about: books, food and Chelsea to throw around (three.js, loaded when near) ---------- */
   (function toss() {
