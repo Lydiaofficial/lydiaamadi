@@ -343,6 +343,10 @@ body.hovering .peek{opacity:1;transform:scale(1)}
 .eq i:nth-child(2){animation-delay:-.3s}.eq i:nth-child(3){animation-delay:-.6s}
 @keyframes eq{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
 .np small{color:var(--mut)}
+button.np{font:inherit;font-size:12px;cursor:pointer;max-width:calc(100vw - var(--gl) - var(--gr))}
+.np .disc,.np .eq i{animation-play-state:paused}
+.np.playing .disc,.np.playing .eq i{animation-play-state:running}
+.np-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .listen{display:flex;align-items:center;gap:clamp(14px,2vw,28px);color:inherit;text-decoration:none;font-weight:800;text-transform:uppercase;letter-spacing:-.04em;font-size:clamp(2.4rem,7vw,6rem);line-height:1;margin-top:6vh}
 .listen .disc{width:clamp(56px,7vw,110px);height:clamp(56px,7vw,110px);background:radial-gradient(circle,var(--bg) 0 6%,var(--fg) 7% 22%,var(--mut) 23% 24%,var(--fg) 25% 36%,var(--mut) 37% 38%,var(--fg) 39%)}
 .listen i{font-family:var(--serif);font-weight:400;text-transform:none;letter-spacing:-.01em}
@@ -834,7 +838,7 @@ body.menu-open .logo{opacity:1}
   <div class="menu-foot"><a href="https://open.spotify.com/playlist/2txMQqT5a0Ew4l3ZG0NPfH" target="_blank" rel="noopener">On repeat · my playlist ↗</a></div>
 </div>
 <div class="cue" id="cue"><i></i>Scroll</div>
-<a class="np" id="np" href="https://open.spotify.com/playlist/2txMQqT5a0Ew4l3ZG0NPfH" target="_blank" rel="noopener" aria-label="Lydia's playlist on Spotify"><span class="disc" aria-hidden="true"></span><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span>On repeat <small>· my playlist</small></span></a>
+<button type="button" class="np" id="np" aria-label="Play Lydia's playlist"><span class="disc" aria-hidden="true"></span><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="np-t" id="npT">On repeat <small>· tap to play</small></span></button>
 
 <!-- ============ ABOUT ============ -->
 <main class="page away" id="about" aria-label="About">
@@ -1383,12 +1387,13 @@ body.menu-open .logo{opacity:1}
       ['spotify:track:4VrWlk8IQxevMvERoX08iC', 'Chandelier', 'Sia'],
       ['spotify:track:2tHwzyyOLoWSFqYNjeVMzj', 'Please Please Please', 'Sabrina Carpenter']
     ];
+    /* when a song ends, the record moves on to the next one */
     const deck = $('.rp-deck', root), title = $('#rpT'), by = $('#rpA'), pp = $('#rpPP'), list = $('#rpList');
     $('.rp-lab', root).style.backgroundImage = `url(${COVER})`;
     list.innerHTML = T.map((t, i) => `<button data-i="${i}">${t[1]}</button>`).join('');
     const PLAY = '<svg viewBox="0 0 16 16"><path d="M4 2l10 6-10 6z"/></svg>', PAUSE = '<svg viewBox="0 0 16 16"><path d="M3 2h4v12H3zM9 2h4v12H9z"/></svg>';
     let ctl = null, i = 0, paused = true, started = false;
-    const paint = () => { deck.classList.toggle('playing', !paused); pp.innerHTML = paused ? PLAY : PAUSE; pp.setAttribute('aria-label', paused ? 'Play' : 'Pause'); $$('button', list).forEach(b => b.classList.toggle('on', +b.dataset.i === i)); };
+    let paint = () => { deck.classList.toggle('playing', !paused); pp.innerHTML = paused ? PLAY : PAUSE; pp.setAttribute('aria-label', paused ? 'Play' : 'Pause'); $$('button', list).forEach(b => b.classList.toggle('on', +b.dataset.i === i)); };
     const show = () => { title.innerHTML = `<b>${T[i][1]}</b>`; by.textContent = T[i][2]; };
     const play = k => { i = (k + T.length) % T.length; started = true; show(); if (ctl) { ctl.loadUri(T[i][0]); ctl.play(); } paused = false; paint(); };
     const toggle = () => { if (!ctl) return; if (!started) play(i); else ctl.togglePlay(); };
@@ -1396,11 +1401,19 @@ body.menu-open .logo{opacity:1}
     $('#rpNext').addEventListener('click', () => play(i + 1)); $('#rpPrev').addEventListener('click', () => play(i - 1));
     list.addEventListener('click', e => { const b = e.target.closest('button'); if (b) play(+b.dataset.i); });
     paint();
-    let booted = false;
-    new IntersectionObserver((es, o) => { if (!es[0].isIntersecting || booted) return; booted = true; o.disconnect();
-      window.onSpotifyIframeApiReady = API => API.createController($('#rpSp'), { uri: T[0][0], width: '100%', height: 80 }, c => { ctl = c; c.addListener('playback_update', e => { const p = e.data.isPaused; if (p !== paused) { paused = p; paint(); } }); });
+    let ready = null;
+    const boot = () => ready || (ready = new Promise(res => {
+      window.onSpotifyIframeApiReady = API => API.createController($('#rpSp'), { uri: T[0][0], width: '100%', height: 80 }, c => { ctl = c; c.addListener('playback_update', e => { const d = e.data, p = d.isPaused; if (p && started && d.duration > 0 && d.position >= d.duration - 1200) { play(i + 1); return; } if (p !== paused) { paused = p; paint(); } }); res(); });
       const s = document.createElement('script'); s.src = 'https://open.spotify.com/embed/iframe-api/v1'; s.async = true; document.body.appendChild(s);
-    }, { rootMargin: '600px 0px' }).observe(root);
+    }));
+    new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { o.disconnect(); boot(); } }, { rootMargin: '600px 0px' }).observe(root);
+    /* the On repeat pill plays and pauses the same record from any page */
+    const np = $('#np'), npT = $('#npT');
+    const pill = () => { np.classList.toggle('playing', !paused); np.setAttribute('aria-label', paused ? "Play Lydia's playlist" : 'Pause the music');
+      npT.innerHTML = started ? `${T[i][1]} <small>· ${paused ? 'paused' : T[i][2]}</small>` : 'On repeat <small>· tap to play</small>'; };
+    const paint0 = paint; paint = () => { paint0(); pill(); };
+    ['pointerenter', 'touchstart', 'focus'].forEach(ev => np.addEventListener(ev, boot, { passive: true }));
+    np.addEventListener('click', () => { if (ctl) toggle(); else boot().then(toggle); });
   })();
 
   /* ---------- about: books, food and Chelsea to throw around (three.js, loaded when near) ---------- */
